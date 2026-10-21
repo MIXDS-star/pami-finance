@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  app:
+    name: Flutter (analyze, unit & widget tests, web build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build web --release --dart-define=SUPABASE_URL=https://example.invalid --dart-define=SUPABASE_ANON_KEY=ci
+
+  backend:
+    name: Database (migrations, RLS & ledger tests) and Edge Functions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.4.x
+      - name: Start Supabase (Docker)
+        run: supabase start -x studio,imgproxy,inbucket,logflare,vector,supavisor
+      - name: Database test-suite
+        run: |
+          DB_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          psql "$DB_URL" -v ON_ERROR_STOP=1 -q -f supabase/tests/_helpers.sql
+          for f in supabase/tests/[0-9]*.sql; do
+            echo "== $f"; psql "$DB_URL" -v ON_ERROR_STOP=1 -q -f "$f" 2>&1 | grep -E "ok -|ERROR|FAIL" || true
+            psql "$DB_URL" -v ON_ERROR_STOP=1 -q -f "$f" >/dev/null
+          done
+      - name: Type-check Edge Functions
+        run: deno check --config supabase/functions/deno.json supabase/functions/*/handler.ts
+      - name: Serve functions and run API tests
+        run: |
+          eval "$(supabase status -o env | sed 's/^/export /')"
+          supabase functions serve --no-verify-jwt=false > /tmp/functions.log 2>&1 &
+          sleep 8
+          SUPABASE_URL=$API_URL SUPABASE_ANON_KEY=$ANON_KEY deno test --allow-net --allow-env \
+            --config supabase/functions/deno.json supabase/functions/tests/

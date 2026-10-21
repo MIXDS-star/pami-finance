@@ -1,0 +1,7 @@
+{
+  "name": "nexo-e2e",
+  "private": true,
+  "type": "module",
+  "description": "End-to-end tests: Flutter web build against the local stack",
+  "dependencies": { "playwright": "1.56.1" }
+}

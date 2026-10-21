@@ -210,6 +210,7 @@ class _QuickPerson extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
         button: true,
+        onTap: onTap,
         selected: selected,
         label: 'Asignar solo a $name',
         excludeSemantics: true,

@@ -150,6 +150,7 @@ class _BalancesTab extends ConsumerWidget {
     final members = ref.watch(membersProvider(ws.id)).value ?? const <Member>[];
     final me = ref.watch(currentUserIdProvider) ?? '';
     final names = {for (final m in members) m.userId: m.userId == me ? 'Tú' : m.displayName};
+    final realNames = {for (final m in members) m.userId: m.displayName};
 
     return RefreshIndicator(
       onRefresh: () async => ref.read(ledgerRevisionProvider.notifier).bump(),
@@ -165,7 +166,7 @@ class _BalancesTab extends ConsumerWidget {
             if (list.isEmpty)
               const EmptyState(compact: true, icon: Icons.balance, title: 'Todo en orden', message: 'Aún no hay gastos compartidos en este espacio.'),
             for (final entry in byCurrency.entries) ...[
-              _currencyBlock(context, ref, entry.key, entry.value, names, me),
+              _currencyBlock(context, ref, entry.key, entry.value, names, realNames, me),
             ],
             const SectionTitle('Reembolsos registrados'),
             AsyncView(
@@ -204,7 +205,8 @@ class _BalancesTab extends ConsumerWidget {
     );
   }
 
-  Widget _currencyBlock(BuildContext context, WidgetRef ref, String code, List<MemberBalance> list, Map<String, String> names, String me) {
+  Widget _currencyBlock(BuildContext context, WidgetRef ref, String code, List<MemberBalance> list, Map<String, String> names,
+      Map<String, String> realNames, String me) {
     final currency = Currency.of(code);
     final transfers = suggestTransfers({for (final b in list) b.userId: b.netMinor});
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -215,7 +217,7 @@ class _BalancesTab extends ConsumerWidget {
           for (final t in transfers)
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: PersonAvatar(name: names[t.fromUserId] ?? '?'),
+              leading: PersonAvatar(name: realNames[t.fromUserId] ?? '?'),
               title: Text('${names[t.fromUserId] ?? 'Exmiembro'} ${t.fromUserId == me ? 'debes' : 'debe'} a ${names[t.toUserId] ?? 'Exmiembro'}'),
               subtitle: AmountText(t.amountMinor, currency, style: context.text.titleMedium),
               trailing: ws.canWrite && (t.fromUserId == me || t.toUserId == me || ws.canAdmin)
@@ -234,7 +236,7 @@ class _BalancesTab extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Row(children: [
-                PersonAvatar(name: names[b.userId] ?? '?', size: 30),
+                PersonAvatar(name: realNames[b.userId] ?? '?', size: 30),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

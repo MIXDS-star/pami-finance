@@ -71,6 +71,7 @@ class _NavItem extends StatelessWidget {
     final color = selected ? context.colors.primary : context.nexo.muted;
     return Semantics(
       button: true,
+      onTap: onTap,
       selected: selected,
       label: label,
       excludeSemantics: true,
@@ -100,6 +101,7 @@ class _AddButton extends StatelessWidget {
   Widget build(BuildContext context) => Center(
         child: Semantics(
           button: true,
+          onTap: onTap,
           label: 'Añadir registro',
           excludeSemantics: true,
           child: Material(

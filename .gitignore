@@ -11,3 +11,7 @@ app/coverage/
 supabase/.temp/
 supabase/.branches/
 tools/local-stack/node_modules/
+app/env/*.json
+!app/env/*.example.json
+supabase/functions/.env
+tools/e2e/node_modules/

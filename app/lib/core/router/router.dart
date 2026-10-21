@@ -30,6 +30,7 @@ import '../../features/spaces/spaces_screen.dart';
 import '../../features/stats/stats_screen.dart';
 import '../finance/expense_draft.dart';
 import '../providers.dart';
+import '../../ui/states.dart';
 
 const authRoutes = {'/welcome', '/sign-in', '/sign-up', '/forgot-password', '/verify-email'};
 
@@ -81,6 +82,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!loggedIn) return authRoutes.contains(loc) ? null : '/welcome';
       if (ref.read(recoveryPendingProvider)) return loc == '/reset-password' ? null : '/reset-password';
       final prefs = ref.read(preferencesProvider);
+      // Wait for the profile before showing any data screen.
+      if (prefs.isLoading && !prefs.hasValue) return loc == '/splash' ? null : '/splash';
       final onboarded = prefs.value?.onboardingCompleted;
       if (onboarded == false && loc != '/onboarding') return '/onboarding';
       final invite = ref.read(pendingInviteProvider);
@@ -88,10 +91,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         ref.read(pendingInviteProvider.notifier).set(null);
         return '/invite/$invite';
       }
-      if (authRoutes.contains(loc)) return '/home';
+      if (authRoutes.contains(loc) || loc == '/splash' || (onboarded == true && loc == '/onboarding')) return '/home';
       return null;
     },
     routes: [
+      GoRoute(path: '/splash', builder: (_, _) => const Scaffold(body: LoadingState())),
       GoRoute(path: '/welcome', builder: (_, _) => const WelcomeScreen()),
       GoRoute(path: '/sign-in', builder: (_, _) => const SignInScreen()),
       GoRoute(path: '/sign-up', builder: (_, _) => const SignUpScreen()),

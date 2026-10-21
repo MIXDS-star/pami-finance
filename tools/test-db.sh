@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Runs the database test-suite (supabase/tests/*.sql) against a fresh local DB.
 set -uo pipefail
+export NEXO_DB="${NEXO_DB:-nexo_test}"
 source "$(dirname "$0")/local-stack/env.sh"
 
 if [[ "${SKIP_RESET:-0}" != "1" ]]; then

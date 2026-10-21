@@ -85,6 +85,7 @@ class _Option extends StatelessWidget {
     final color = enabled ? context.colors.primary : context.nexo.muted;
     return Semantics(
       button: true,
+      onTap: enabled ? onTap : null,
       enabled: enabled,
       label: '$title. $subtitle',
       excludeSemantics: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app.dart';
@@ -9,6 +10,8 @@ import 'features/auth/config_missing_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // On the web, pushed screens are reflected in the URL (refresh keeps you there).
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   if (!Env.isConfigured) {
     // Honest state instead of a fake demo: the backend is not configured.
     runApp(const ConfigMissingApp());

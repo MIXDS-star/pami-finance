@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 390, height: 844 }, locale: 'es-CO' });
+page.on('pageerror', (e) => console.log('pageerror:', e.message.slice(0, 300)));
+await page.goto('http://127.0.0.1:8080/', { waitUntil: 'networkidle' });
+await page.waitForSelector('flt-semantics-placeholder', { state: 'attached', timeout: 20000 });
+await page.locator('flt-semantics-placeholder').dispatchEvent('click');
+await page.waitForTimeout(1500);
+const dump = async () => console.log(await page.evaluate(() => [...document.querySelectorAll('flt-semantics [role], flt-semantics input')].map(e => `${e.tagName}:${e.getAttribute('role')}:${e.getAttribute('aria-label') || e.textContent?.slice(0, 60)}`).join('\n')));
+await dump();
+await page.getByRole('button', { name: 'Crear cuenta gratis' }).click();
+await page.waitForTimeout(1200);
+await dump();
+await page.screenshot({ path: '/tmp/nexo-stack/probe.png' });
+await browser.close();

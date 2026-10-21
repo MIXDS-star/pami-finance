@@ -143,6 +143,7 @@ class _VoiceCaptureScreenState extends ConsumerState<VoiceCaptureScreen> with Bu
           const SizedBox(height: 32),
           Semantics(
             button: true,
+            onTap: busy || caps?.transcription != true ? null : (_phase == _Phase.recording ? _stop : (_phase == _Phase.transcribing ? null : _start)),
             label: _phase == _Phase.recording ? 'Detener grabación' : 'Empezar a grabar',
             excludeSemantics: true,
             child: GestureDetector(

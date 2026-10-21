@@ -60,13 +60,24 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
       } else if (widget.initialDraft != null) {
         draft = widget.initialDraft!;
       } else {
-        final kind = switch (widget.kind) { 'income' => TxKind.income, 'transfer' => TxKind.transfer, _ => TxKind.expense };
+        final kind = switch (widget.kind) {
+          'income' => TxKind.income,
+          'transfer' => TxKind.transfer,
+          _ => TxKind.expense,
+        };
         final personal = spaces.firstWhere((w) => w.isPersonal);
         final ws = kind == TxKind.expense && widget.workspaceId != null
             ? spaces.firstWhere((w) => w.id == widget.workspaceId && w.canWrite, orElse: () => personal)
             : personal;
         final members = await ref.read(membersProvider(ws.id).future);
         draft = newDraft(ws: ws, me: _me, members: members, kind: kind);
+      }
+      // Membership may have changed since it was cached (someone joined or
+      // left): always offer the current members when composing a split.
+      ref.invalidate(membersProvider(draft.workspaceId));
+      if (widget.editId == null && widget.initialDraft == null) {
+        final ws = (await ref.read(workspacesProvider.future)).firstWhere((w) => w.id == draft.workspaceId);
+        draft.rule = defaultRule(ws, _me, await ref.read(membersProvider(ws.id).future));
       }
       _multiPayer = draft.payments.length > 1;
       if (mounted) setState(() => _draft = draft);
@@ -78,6 +89,7 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
   void _update(void Function(ExpenseDraft d) change) => setState(() => change(_draft!));
 
   Future<void> _changeWorkspace(Workspace ws) async {
+    ref.invalidate(membersProvider(ws.id));
     final members = await ref.read(membersProvider(ws.id).future);
     final cats = await ref.read(categoriesProvider.future);
     _update((d) {
@@ -103,10 +115,20 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
     final blocking = d.validate().where((i) => i.blocking).toList();
     if (blocking.isNotEmpty) {
       HapticFeedback.heavyImpact();
-      await showNxSheet(context, builder: (_) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        const SheetHeader('Revisa antes de guardar'),
-        for (final i in blocking) Padding(padding: const EdgeInsets.only(bottom: 8), child: Notice(kind: NoticeKind.warning, message: i.message)),
-      ]));
+      await showNxSheet(
+        context,
+        builder: (_) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SheetHeader('Revisa antes de guardar'),
+            for (final i in blocking)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Notice(kind: NoticeKind.warning, message: i.message),
+              ),
+          ],
+        ),
+      );
       return;
     }
     final outcome = await runBusy(() => saveDraft(context, ref, d));
@@ -124,9 +146,12 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
         showSuccess(context, 'Sin conexión: quedó en este dispositivo como pendiente de sincronizar.');
         context.pop();
       case Failed(:final failure) when failure.kind == FailureKind.conflict:
-        final reload = await confirmAction(context, title: 'Otra persona editó este gasto',
-            message: 'Para no sobrescribir sus cambios, recarga la versión actual. Tus cambios sin guardar se descartarán.',
-            confirmLabel: 'Recargar');
+        final reload = await confirmAction(
+          context,
+          title: 'Otra persona editó este gasto',
+          message: 'Para no sobrescribir sus cambios, recarga la versión actual. Tus cambios sin guardar se descartarán.',
+          confirmLabel: 'Recargar',
+        );
         if (reload) _init();
       case Failed(:final failure):
         showFailure(context, failure);
@@ -138,15 +163,25 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
   @override
   Widget build(BuildContext context) {
     final d = _draft;
-    final title = widget.editId != null ? 'Editar movimiento' : switch (d?.kind) {
-      TxKind.income => 'Nuevo ingreso',
-      TxKind.transfer => 'Nueva transferencia',
-      _ => 'Nuevo gasto',
-    };
+    final title = widget.editId != null
+        ? 'Editar movimiento'
+        : switch (d?.kind) {
+            TxKind.income => 'Nuevo ingreso',
+            TxKind.transfer => 'Nueva transferencia',
+            _ => 'Nuevo gasto',
+          };
     if (_loadError != null) {
-      return Scaffold(appBar: AppBar(title: Text(title)), body: ErrorState(error: _loadError!, onRetry: _init));
+      return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: ErrorState(error: _loadError!, onRetry: _init),
+      );
     }
-    if (d == null) return Scaffold(appBar: AppBar(title: Text(title)), body: const LoadingState());
+    if (d == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: const LoadingState(),
+      );
+    }
 
     final spaces = ref.watch(workspacesProvider).value ?? const <Workspace>[];
     final ws = spaces.where((w) => w.id == d.workspaceId).firstOrNull;
@@ -203,17 +238,28 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
                 const SectionTitle('Quién pagó'),
                 _payers(context, d, members, accounts),
                 if (!(ws?.isPersonal ?? true)) ...[
-                  SectionTitle('Cómo se reparte',
-                      action: d.receipt != null && d.receipt!.lines.isNotEmpty
-                          ? Row(mainAxisSize: MainAxisSize.min, children: [
-                              const Text('Por producto'),
-                              Switch(
-                                value: d.byItem,
-                                onChanged: (v) => _update((x) => x.rule = v ? const ByItemSplit() : EqualSplit(
-                                    members.where((m) => m.active).map((m) => m.userId).toList())),
+                  SectionTitle(
+                    'Cómo se reparte',
+                    action: d.receipt != null && d.receipt!.lines.isNotEmpty
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const ExcludeSemantics(child: Text('Por producto')),
+                              Semantics(
+                                label: 'Repartir por producto',
+                                child: Switch(
+                                  value: d.byItem,
+                                  onChanged: (v) => _update(
+                                    (x) => x.rule = v
+                                        ? const ByItemSplit()
+                                        : EqualSplit(members.where((m) => m.active).map((m) => m.userId).toList()),
+                                  ),
+                                ),
                               ),
-                            ])
-                          : null),
+                            ],
+                          )
+                        : null,
+                  ),
                   if (!d.byItem)
                     SplitEditor(
                       key: ValueKey('split-${d.workspaceId}'),
@@ -226,18 +272,28 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
                   else
                     const Notice(message: 'Cada línea de la factura se asigna a quien corresponde. El total por persona se calcula abajo.'),
                 ],
-                SectionTitle('Factura y productos',
-                    action: d.receipt == null
-                        ? TextButton.icon(
-                            onPressed: () => _update((x) => x.receipt = ReceiptDraft()),
-                            icon: const Icon(Icons.list_alt, size: 18),
-                            label: const Text('Detallar'))
-                        : TextButton(onPressed: () => _update((x) {
-                              x.receipt = null;
-                              if (x.byItem || x.rule is ByItemSplit) {
-                                x.rule = EqualSplit(members.where((m) => m.active).map((m) => m.userId).toList());
-                              }
-                            }), child: const Text('Quitar detalle'))),
+                SectionTitle(
+                  'Factura y productos',
+                  action: d.receipt == null
+                      ? TextButton.icon(
+                          onPressed: () => _update((x) {
+                            x.receipt = ReceiptDraft();
+                            // Detailing a shared bill means assigning it product by product.
+                            if (!(ws?.isPersonal ?? true)) x.rule = const ByItemSplit();
+                          }),
+                          icon: const Icon(Icons.list_alt, size: 18),
+                          label: const Text('Detallar'),
+                        )
+                      : TextButton(
+                          onPressed: () => _update((x) {
+                            x.receipt = null;
+                            if (x.byItem || x.rule is ByItemSplit) {
+                              x.rule = EqualSplit(members.where((m) => m.active).map((m) => m.userId).toList());
+                            }
+                          }),
+                          child: const Text('Quitar detalle'),
+                        ),
+                ),
                 if (d.receipt != null)
                   ReceiptEditor(
                     receipt: d.receipt!,
@@ -249,8 +305,10 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
                     onChanged: () => setState(() {}),
                   )
                 else
-                  Text('Opcional: añade los productos para asignarlos por persona o categoría.',
-                      style: context.text.bodyMedium?.copyWith(color: context.nexo.muted)),
+                  Text(
+                    'Opcional: añade los productos para asignarlos por persona o categoría.',
+                    style: context.text.bodyMedium?.copyWith(color: context.nexo.muted),
+                  ),
               ],
               if (d.kind == TxKind.income) ...[
                 const SectionTitle('Cuenta que recibe'),
@@ -274,13 +332,18 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
               TextFormField(
                 initialValue: d.notes,
                 decoration: InputDecoration(
-                    labelText: 'Notas (opcional)',
-                    helperText: ws?.isPersonal ?? true ? 'Solo tú las ves' : 'Las verán los miembros de ${ws!.name}'),
+                  labelText: 'Notas (opcional)',
+                  helperText: ws?.isPersonal ?? true ? 'Solo tú las ves' : 'Las verán los miembros de ${ws!.name}',
+                ),
                 maxLines: 3,
                 maxLength: 2000,
                 onChanged: (v) => _update((x) => x.notes = v),
               ),
-              for (final i in issues) Padding(padding: const EdgeInsets.only(top: 8), child: Notice(message: i.message)),
+              for (final i in issues)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Notice(message: i.message),
+                ),
             ],
           );
         },
@@ -300,24 +363,24 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
   }
 
   Widget _kindSelector(ExpenseDraft d) => SegmentedButton<TxKind>(
-        segments: const [
-          ButtonSegment(value: TxKind.expense, label: Text('Gasto'), icon: Icon(Icons.north_east, size: 18)),
-          ButtonSegment(value: TxKind.income, label: Text('Ingreso'), icon: Icon(Icons.south_west, size: 18)),
-          ButtonSegment(value: TxKind.transfer, label: Text('Transferencia'), icon: Icon(Icons.swap_horiz, size: 18)),
-        ],
-        selected: {d.kind},
-        onSelectionChanged: (s) async {
-          final kind = s.first;
-          final personal = await ref.read(personalWorkspaceProvider.future);
-          if (kind != TxKind.expense && d.workspaceId != personal.id) await _changeWorkspace(personal);
-          _update((x) {
-            x.kind = kind;
-            x.categoryId = null;
-            x.payments = kind == TxKind.expense ? [PaymentDraft(payerId: _me, amountMinor: x.totalMinor ?? 0)] : [];
-            if (kind != TxKind.expense) x.receipt = null;
-          });
-        },
-      );
+    segments: const [
+      ButtonSegment(value: TxKind.expense, label: Text('Gasto'), icon: Icon(Icons.north_east, size: 18)),
+      ButtonSegment(value: TxKind.income, label: Text('Ingreso'), icon: Icon(Icons.south_west, size: 18)),
+      ButtonSegment(value: TxKind.transfer, label: Text('Transferencia'), icon: Icon(Icons.swap_horiz, size: 18)),
+    ],
+    selected: {d.kind},
+    onSelectionChanged: (s) async {
+      final kind = s.first;
+      final personal = await ref.read(personalWorkspaceProvider.future);
+      if (kind != TxKind.expense && d.workspaceId != personal.id) await _changeWorkspace(personal);
+      _update((x) {
+        x.kind = kind;
+        x.categoryId = null;
+        x.payments = kind == TxKind.expense ? [PaymentDraft(payerId: _me, amountMinor: x.totalMinor ?? 0)] : [];
+        if (kind != TxKind.expense) x.receipt = null;
+      });
+    },
+  );
 
   Widget _categoryField(BuildContext context, ExpenseDraft d, List<Category> categories) {
     final kind = d.kind == TxKind.income ? 'income' : 'expense';
@@ -326,26 +389,38 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
     return InkWell(
       borderRadius: BorderRadius.circular(NexoTokens.radiusS),
       onTap: () async {
-        final picked = await showNxSheet<Category>(context, builder: (ctx) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          const SheetHeader('Categoría'),
-          Wrap(spacing: 8, runSpacing: 8, children: [
-            for (final c in options)
-              ChoiceChip(
-                avatar: Icon(c.iconData, size: 18, color: c.color),
-                label: Text(c.name),
-                selected: c.id == d.categoryId,
-                onSelected: (_) => Navigator.pop(ctx, c),
+        final picked = await showNxSheet<Category>(
+          context,
+          builder: (ctx) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SheetHeader('Categoría'),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final c in options)
+                    ChoiceChip(
+                      avatar: Icon(c.iconData, size: 18, color: c.color),
+                      label: Text(c.name),
+                      selected: c.id == d.categoryId,
+                      onSelected: (_) => Navigator.pop(ctx, c),
+                    ),
+                ],
               ),
-          ]),
-        ]));
+            ],
+          ),
+        );
         if (picked != null) _update((x) => x.categoryId = picked.id);
       },
       child: InputDecorator(
         decoration: const InputDecoration(labelText: 'Categoría', suffixIcon: Icon(Icons.expand_more)),
-        child: Row(children: [
-          if (selected != null) ...[CategoryBadge(category: selected, size: 24), const SizedBox(width: 8)],
-          Text(selected?.name ?? 'Elegir categoría'),
-        ]),
+        child: Row(
+          children: [
+            if (selected != null) ...[CategoryBadge(category: selected, size: 24), const SizedBox(width: 8)],
+            Text(selected?.name ?? 'Elegir categoría'),
+          ],
+        ),
       ),
     );
   }
@@ -354,18 +429,26 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
     final writable = spaces.where((w) => w.canWrite).toList();
     if (widget.editId != null) {
       final ws = spaces.where((w) => w.id == d.workspaceId).firstOrNull;
-      return ListTile(contentPadding: EdgeInsets.zero, leading: Icon(ws?.kind.icon), title: Text(ws?.name ?? ''),
-          subtitle: const Text('El espacio de un movimiento no se puede cambiar.'));
+      return ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(ws?.kind.icon),
+        title: Text(ws?.name ?? ''),
+        subtitle: const Text('El espacio de un movimiento no se puede cambiar.'),
+      );
     }
-    return Wrap(spacing: 8, runSpacing: 8, children: [
-      for (final w in writable)
-        ChoiceChip(
-          avatar: Icon(w.kind.icon, size: 18),
-          label: Text(w.name),
-          selected: w.id == d.workspaceId,
-          onSelected: (_) => _changeWorkspace(w),
-        ),
-    ]);
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final w in writable)
+          ChoiceChip(
+            avatar: Icon(w.kind.icon, size: 18),
+            label: Text(w.name),
+            selected: w.id == d.workspaceId,
+            onSelected: (_) => _changeWorkspace(w),
+          ),
+      ],
+    );
   }
 
   Widget _payers(BuildContext context, ExpenseDraft d, List<Member> members, List<Account> accounts) {
@@ -375,76 +458,120 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
     if (!_multiPayer) {
       final payer = d.payments.firstOrNull?.payerId ?? _me;
       if (shared) {
-        children.add(Wrap(spacing: 8, runSpacing: 8, children: [
-          for (final m in members.where((m) => m.active || m.userId == payer))
-            ChoiceChip(
-              avatar: PersonAvatar(name: m.displayName, size: 22),
-              label: Text(m.userId == _me ? 'Yo' : m.displayName),
-              selected: payer == m.userId,
-              onSelected: (_) => _update((x) => x.payments = [PaymentDraft(payerId: m.userId, amountMinor: x.totalMinor ?? 0)]),
-            ),
-        ]));
+        children.add(
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final m in members.where((m) => m.active || m.userId == payer))
+                ChoiceChip(
+                  avatar: PersonAvatar(name: m.displayName, size: 22),
+                  label: Text(m.userId == _me ? 'Yo' : m.displayName),
+                  selected: payer == m.userId,
+                  onSelected: (_) => _update((x) => x.payments = [PaymentDraft(payerId: m.userId, amountMinor: x.totalMinor ?? 0)]),
+                ),
+            ],
+          ),
+        );
       }
     } else {
       for (final m in members.where((m) => m.active || d.payments.any((p) => p.payerId == m.userId))) {
         final p = d.payments.where((p) => p.payerId == m.userId).firstOrNull;
-        children.add(Row(children: [
-          Checkbox(value: p != null, onChanged: (v) => _update((x) {
-                if (v == true) {
-                  x.payments.add(PaymentDraft(payerId: m.userId, amountMinor: 0));
-                } else {
-                  x.payments.removeWhere((q) => q.payerId == m.userId);
-                }
-              })),
-          Expanded(child: Text(m.userId == _me ? 'Yo' : m.displayName)),
-          if (p != null)
-            SizedBox(width: 150, child: MoneyField(currency: d.currency, label: 'Pagó', initialMinor: p.amountMinor == 0 ? null : p.amountMinor,
-                onChanged: (v) => _update((_) => p.amountMinor = v ?? 0))),
-        ]));
+        children.add(
+          Row(
+            children: [
+              Checkbox(
+                value: p != null,
+                onChanged: (v) => _update((x) {
+                  if (v == true) {
+                    x.payments.add(PaymentDraft(payerId: m.userId, amountMinor: 0));
+                  } else {
+                    x.payments.removeWhere((q) => q.payerId == m.userId);
+                  }
+                }),
+              ),
+              Expanded(child: Text(m.userId == _me ? 'Yo' : m.displayName)),
+              if (p != null)
+                SizedBox(
+                  width: 150,
+                  child: MoneyField(
+                    currency: d.currency,
+                    label: 'Pagó',
+                    initialMinor: p.amountMinor == 0 ? null : p.amountMinor,
+                    onChanged: (v) => _update((_) => p.amountMinor = v ?? 0),
+                  ),
+                ),
+            ],
+          ),
+        );
       }
     }
     if (shared) {
-      children.add(Align(
-        alignment: Alignment.centerLeft,
-        child: TextButton(
-          onPressed: () => setState(() {
-            _multiPayer = !_multiPayer;
-            if (!_multiPayer) d.payments = [PaymentDraft(payerId: _me, amountMinor: d.totalMinor ?? 0)];
-          }),
-          child: Text(_multiPayer ? 'Pagó una sola persona' : 'Pagaron varias personas'),
+      children.add(
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () => setState(() {
+              _multiPayer = !_multiPayer;
+              if (!_multiPayer) d.payments = [PaymentDraft(payerId: _me, amountMinor: d.totalMinor ?? 0)];
+            }),
+            child: Text(_multiPayer ? 'Pagó una sola persona' : 'Pagaron varias personas'),
+          ),
         ),
-      ));
+      );
     }
     if (myPayment != null) {
       children.add(const SizedBox(height: 8));
-      children.add(Row(children: [
-        Expanded(child: _accountDropdown(accounts, myPayment.accountId, (v) => _update((_) => myPayment.accountId = v),
-            allowNone: true, label: 'Mi cuenta o medio')),
-        const SizedBox(width: 12),
-        Expanded(
-          child: DropdownButtonFormField<String?>(
-            initialValue: myPayment.method,
-            isExpanded: true,
-            decoration: const InputDecoration(labelText: 'Forma de pago'),
-            items: [
-              const DropdownMenuItem(value: null, child: Text('Sin indicar')),
-              for (final e in paymentMethodLabels.entries) DropdownMenuItem(value: e.key, child: Text(e.value)),
-            ],
-            onChanged: (v) => _update((_) => myPayment.method = v),
-          ),
+      children.add(
+        Row(
+          children: [
+            Expanded(
+              child: _accountDropdown(
+                accounts,
+                myPayment.accountId,
+                (v) => _update((_) => myPayment.accountId = v),
+                allowNone: true,
+                label: 'Mi cuenta o medio',
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: DropdownButtonFormField<String?>(
+                initialValue: myPayment.method,
+                isExpanded: true,
+                decoration: const InputDecoration(labelText: 'Forma de pago'),
+                items: [
+                  const DropdownMenuItem(value: null, child: Text('Sin indicar')),
+                  for (final e in paymentMethodLabels.entries) DropdownMenuItem(value: e.key, child: Text(e.value)),
+                ],
+                onChanged: (v) => _update((_) => myPayment.method = v),
+              ),
+            ),
+          ],
         ),
-      ]));
+      );
       if (shared) {
-        children.add(Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text('Los demás miembros ven que pagaste, no con qué cuenta.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
-        ));
+        children.add(
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              'Los demás miembros ven que pagaste, no con qué cuenta.',
+              style: context.text.bodySmall?.copyWith(color: context.nexo.muted),
+            ),
+          ),
+        );
       }
     }
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
   }
 
-  Widget _accountDropdown(List<Account> accounts, String? value, ValueChanged<String?> onChanged, {bool allowNone = false, String label = 'Cuenta'}) {
+  Widget _accountDropdown(
+    List<Account> accounts,
+    String? value,
+    ValueChanged<String?> onChanged, {
+    bool allowNone = false,
+    String label = 'Cuenta',
+  }) {
     final valid = accounts.any((a) => a.id == value) ? value : null;
     return DropdownButtonFormField<String?>(
       initialValue: valid,
@@ -452,7 +579,17 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
       decoration: InputDecoration(labelText: label),
       items: [
         if (allowNone || accounts.isEmpty) const DropdownMenuItem(value: null, child: Text('Sin cuenta')),
-        for (final a in accounts) DropdownMenuItem(value: a.id, child: Row(children: [Icon(a.type.icon, size: 18), const SizedBox(width: 8), Flexible(child: Text(a.name, overflow: TextOverflow.ellipsis))])),
+        for (final a in accounts)
+          DropdownMenuItem(
+            value: a.id,
+            child: Row(
+              children: [
+                Icon(a.type.icon, size: 18),
+                const SizedBox(width: 8),
+                Flexible(child: Text(a.name, overflow: TextOverflow.ellipsis)),
+              ],
+            ),
+          ),
       ],
       onChanged: onChanged,
     );

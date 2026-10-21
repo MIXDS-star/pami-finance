@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Nexo Finance</string>
+	<string>NEXO Finance</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,10 +22,33 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>co.nexofinance</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>co.nexofinance</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Usamos la cámara para fotografiar facturas que tú decides registrar.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Face ID protege el acceso a tus finanzas si activas el bloqueo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Usamos el micrófono solo cuando grabas una nota de voz para registrar un gasto.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Puedes elegir una foto de una factura de tu galería para registrarla.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

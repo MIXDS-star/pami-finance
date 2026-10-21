@@ -355,7 +355,9 @@ class _TrendChart extends StatelessWidget {
               topTitles: const AxisTitles(),
               rightTitles: const AxisTitles(),
               leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 52,
-                  getTitlesWidget: (v, meta) => SideTitleWidget(meta: meta, child: Text(compact(v), style: context.text.labelSmall?.copyWith(color: context.nexo.muted))))),
+                  getTitlesWidget: (v, meta) => v == meta.max && v % meta.appliedInterval != 0
+                    ? const SizedBox.shrink() // avoid the overlapping top label
+                    : SideTitleWidget(meta: meta, child: Text(compact(v), style: context.text.labelSmall?.copyWith(color: context.nexo.muted))))),
               bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true,
                   getTitlesWidget: (v, meta) => SideTitleWidget(meta: meta,
                       child: Text(monthShort(points[v.toInt()].month.month), style: context.text.labelSmall?.copyWith(color: context.nexo.muted))))),
@@ -414,6 +416,7 @@ class _CategoryBars extends StatelessWidget {
     final rest = list.skip(8).fold<int>(0, (a, c) => a + c.amountMinor);
     Widget bar(String name, int v, VoidCallback? tap) => Semantics(
           button: tap != null,
+          onTap: tap,
           label: '$name: ${formatMinor(v, currency)}, ${formatBp(total == 0 ? 0 : v * 10000 ~/ total)} del total',
           excludeSemantics: true,
           child: InkWell(

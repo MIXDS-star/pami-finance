@@ -69,6 +69,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with BusySt
       }
       await profiles.completeOnboarding();
       ref.invalidate(preferencesProvider);
+      await ref.read(preferencesProvider.future);
       ref.invalidate(profileProvider);
       ref.read(spacesRevisionProvider.notifier).bump();
       ref.read(ledgerRevisionProvider.notifier).bump();

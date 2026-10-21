@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+*.local
+node_modules/
+/tmp/
+app/build/
+app/.dart_tool/
+app/.flutter-plugins*
+app/coverage/
+supabase/.temp/
+supabase/.branches/

@@ -1,0 +1,9 @@
+{
+  "name": "nexo-local-stack",
+  "private": true,
+  "type": "module",
+  "description": "Docker-less local Supabase-compatible gateway for NEXO development",
+  "dependencies": {
+    "pg": "8.13.1"
+  }
+}

@@ -10,3 +10,4 @@ app/.flutter-plugins*
 app/coverage/
 supabase/.temp/
 supabase/.branches/
+tools/local-stack/node_modules/

@@ -47,10 +47,18 @@ async function click(page, name, exact = true) {
   await page.waitForTimeout(700);
 }
 async function fill(page, label, text) {
-  const el = input(page, label);
-  await el.click();
-  await el.fill(text);
-  await page.waitForTimeout(250);
+  // Flutter web moves focus to its own editing element after a tap: type
+  // through the keyboard like a person would, then check the value landed.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await input(page, label).click();
+    await page.waitForTimeout(300);
+    await page.keyboard.press('Control+A');
+    await page.keyboard.type(text, { delay: 5 });
+    await page.waitForTimeout(250);
+    const value = await page.evaluate(() => document.activeElement && 'value' in document.activeElement ? document.activeElement.value : null);
+    if (value === null || value.replace(/\D/g, '') === text.replace(/\D/g, '') || value === text) return;
+  }
+  throw new Error(`could not type into ${label}`);
 }
 // Flutter exposes text either as node text or merged into aria-label.
 const hasText = (page, text) => page.evaluate((t) => (document.querySelector('flt-semantics-host')?.textContent ?? '').includes(t)

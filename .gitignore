@@ -16,3 +16,4 @@ app/env/*.json
 supabase/functions/.env
 tools/e2e/node_modules/
 *.bundle
+dist/

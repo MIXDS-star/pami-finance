@@ -72,6 +72,11 @@ class AppFailure implements Exception {
       case 401:
         return const AppFailure(FailureKind.auth, 'Tu sesión expiró. Inicia sesión de nuevo.');
       case 429:
+        if (code == 'ai_rate_limited') {
+          return const AppFailure(FailureKind.rateLimited,
+              'Se alcanzó el límite de uso del servicio de IA. Espera un momento o registra el movimiento manualmente.',
+              code: 'ai_rate_limited');
+        }
         return const AppFailure(FailureKind.rateLimited, 'Has hecho muchas solicitudes seguidas. Espera un minuto.');
       case 503:
         if (code == 'ai_not_configured') {
@@ -198,6 +203,7 @@ class AppFailure implements Exception {
     'receipt_file_not_found': 'No se encontró el archivo de la factura.',
     'receipt_file_too_large': 'La factura supera 10 MB.',
     'receipt_file_type_invalid': 'El archivo no es una imagen o PDF válido.',
+    'receipt_pdf_unsupported': 'El servicio de IA configurado no lee PDF. Toma una foto de la factura o escribe las líneas.',
     'receipt_heic_unsupported': 'El formato HEIC no es compatible: toma la foto en JPG.',
     'audio_type_invalid': 'Formato de audio no admitido.',
     'audio_too_large': 'La grabación es demasiado larga.',

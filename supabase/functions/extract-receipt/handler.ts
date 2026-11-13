@@ -34,6 +34,8 @@ export function createHandler(registry: () => AiRegistry = loadRegistry) {
       const extraction = sanitizeReceipt(await extractor.extractReceipt({ mediaType: type, base64: encodeBase64(bytes) }, { defaultCurrency: currency, today }));
       return json({ provider: extractor.id, extraction });
     } catch (e) {
+      if (e instanceof AiOutputError && e.message === 'pdf_unsupported') throw new HttpError(415, 'receipt_pdf_unsupported');
+      if (e instanceof AiOutputError && e.message === 'rate_limited') throw new HttpError(429, 'ai_rate_limited');
       if (e instanceof AiOutputError) throw new HttpError(e.code === 'refused' ? 422 : 502, `ai_${e.code}`);
       throw e;
     }

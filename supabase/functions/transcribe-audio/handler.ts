@@ -22,6 +22,7 @@ export function createHandler(registry: () => AiRegistry = loadRegistry) {
       if (!result.text) throw new HttpError(422, 'audio_no_speech');
       return json({ provider: transcriber.id, text: result.text, duration_seconds: result.durationSeconds ?? null });
     } catch (e) {
+      if (e instanceof AiOutputError && e.message === 'rate_limited') throw new HttpError(429, 'ai_rate_limited');
       if (e instanceof AiOutputError) throw new HttpError(502, `ai_${e.code}`);
       throw e;
     }

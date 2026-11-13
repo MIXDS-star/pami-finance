@@ -37,6 +37,7 @@ export function createHandler(registry: () => AiRegistry = loadRegistry) {
         })),
       });
     } catch (e) {
+      if (e instanceof AiOutputError && e.message === 'rate_limited') throw new HttpError(429, 'ai_rate_limited');
       if (e instanceof AiOutputError) throw new HttpError(e.code === 'refused' ? 422 : 502, `ai_${e.code}`);
       throw e;
     }

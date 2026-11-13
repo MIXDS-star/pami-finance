@@ -3,6 +3,6 @@
   "SUPABASE_ANON_KEY": "<anon key printed by tools/local-stack/start.sh or `supabase status`>",
   "APP_FLAVOR": "development",
   "REALTIME_ENABLED": "false",
-  "AUTH_REDIRECT_URL": "co.nexofinance://auth-callback",
-  "INVITE_BASE_URL": "co.nexofinance://invite"
+  "AUTH_REDIRECT_URL": "co.pamifinance://auth-callback",
+  "INVITE_BASE_URL": "co.pamifinance://invite"
 }

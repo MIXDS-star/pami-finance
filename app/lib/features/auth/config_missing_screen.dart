@@ -22,7 +22,7 @@ class ConfigMissingApp extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text('Configuración pendiente', style: context.text.headlineSmall),
                   const SizedBox(height: 8),
-                  const Text('Esta compilación no tiene conexión configurada con el servidor de NEXO Finance. '
+                  const Text('Esta compilación no tiene conexión configurada con el servidor de Pami Finance. '
                       'Compila la app con SUPABASE_URL y SUPABASE_ANON_KEY (ver README, sección «Configurar la app»).'),
                 ]),
               ),

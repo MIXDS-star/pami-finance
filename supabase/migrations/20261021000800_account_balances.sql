@@ -1,4 +1,4 @@
--- NEXO Finance · 0800 · Manual account balances, derived in ONE place.
+-- Pami Finance · 0800 · Manual account balances, derived in ONE place.
 -- balance = opening + income received − expenses I paid from it
 --           − transfers out + transfers in
 -- (for credit cards a negative balance is the amount owed).

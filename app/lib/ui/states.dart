@@ -62,14 +62,14 @@ class EmptyState extends StatelessWidget {
           Container(
             width: 64,
             height: 64,
-            decoration: BoxDecoration(color: context.nexo.brandSoft, shape: BoxShape.circle),
+            decoration: BoxDecoration(color: context.pami.brandSoft, shape: BoxShape.circle),
             child: Icon(icon, size: 30, color: context.colors.primary),
           ),
           const SizedBox(height: 16),
           Text(title, style: context.text.titleMedium, textAlign: TextAlign.center),
           if (message != null) ...[
             const SizedBox(height: 6),
-            Text(message!, style: context.text.bodyMedium?.copyWith(color: context.nexo.muted), textAlign: TextAlign.center),
+            Text(message!, style: context.text.bodyMedium?.copyWith(color: context.pami.muted), textAlign: TextAlign.center),
           ],
           if (action != null) ...[const SizedBox(height: 20), action!],
         ],
@@ -121,17 +121,17 @@ class OfflineBanner extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final online = ref.watch(connectivityProvider).value ?? true;
     return AnimatedSize(
-      duration: NexoTokens.motion,
+      duration: PamiTokens.motion,
       child: online
           ? const SizedBox(width: double.infinity)
           : Semantics(
               liveRegion: true,
               child: Container(
                 width: double.infinity,
-                color: context.nexo.warning.withValues(alpha: 0.16),
+                color: context.pami.warning.withValues(alpha: 0.16),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Row(children: [
-                  Icon(Icons.cloud_off_outlined, size: 18, color: context.nexo.warning),
+                  Icon(Icons.cloud_off_outlined, size: 18, color: context.pami.warning),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text('Sin conexión. Puedes guardar borradores; nada se marca como sincronizado sin confirmación del servidor.',
@@ -155,10 +155,10 @@ class Notice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (color, icon) = switch (kind) {
-      NoticeKind.info => (context.nexo.info, Icons.info_outline),
-      NoticeKind.warning => (context.nexo.warning, Icons.warning_amber_rounded),
+      NoticeKind.info => (context.pami.info, Icons.info_outline),
+      NoticeKind.warning => (context.pami.warning, Icons.warning_amber_rounded),
       NoticeKind.error => (context.colors.error, Icons.error_outline),
-      NoticeKind.success => (context.nexo.positive, Icons.check_circle_outline),
+      NoticeKind.success => (context.pami.positive, Icons.check_circle_outline),
     };
     return Semantics(
       container: true,
@@ -166,7 +166,7 @@ class Notice extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(NexoTokens.radiusS),
+          borderRadius: BorderRadius.circular(PamiTokens.radiusS),
           border: Border.all(color: color.withValues(alpha: 0.35)),
         ),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [

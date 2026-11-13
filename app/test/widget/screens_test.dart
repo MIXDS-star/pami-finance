@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexo_finance/core/finance/balances.dart';
-import 'package:nexo_finance/core/finance/split_rules.dart';
-import 'package:nexo_finance/data/models.dart';
-import 'package:nexo_finance/data/repositories/ai_repository.dart';
-import 'package:nexo_finance/features/copilot/copilot_screen.dart';
-import 'package:nexo_finance/features/home/home_screen.dart';
-import 'package:nexo_finance/features/movements/movements_screen.dart';
-import 'package:nexo_finance/features/movements/transaction_editor_screen.dart';
-import 'package:nexo_finance/features/spaces/space_detail_screen.dart';
-import 'package:nexo_finance/features/stats/stats_screen.dart';
+import 'package:pami_finance/core/finance/balances.dart';
+import 'package:pami_finance/core/finance/split_rules.dart';
+import 'package:pami_finance/data/models.dart';
+import 'package:pami_finance/data/repositories/ai_repository.dart';
+import 'package:pami_finance/features/copilot/copilot_screen.dart';
+import 'package:pami_finance/features/home/home_screen.dart';
+import 'package:pami_finance/features/movements/movements_screen.dart';
+import 'package:pami_finance/features/movements/transaction_editor_screen.dart';
+import 'package:pami_finance/features/spaces/space_detail_screen.dart';
+import 'package:pami_finance/features/stats/stats_screen.dart';
 
 import 'fakes.dart';
 

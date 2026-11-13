@@ -1,4 +1,4 @@
-# NEXO Finance
+# Pami Finance
 
 Aplicación de finanzas personales y compartidas para Colombia (COP, español, `America/Bogota`), con Flutter en el cliente y Supabase (PostgreSQL + RLS, Auth, Storage, Realtime, Edge Functions) en el servidor.
 

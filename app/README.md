@@ -1,4 +1,4 @@
-# nexo_finance
+# pami_finance
 
 A new Flutter project.
 

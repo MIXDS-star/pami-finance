@@ -82,7 +82,7 @@ class _Option extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = enabled ? context.colors.primary : context.nexo.muted;
+    final color = enabled ? context.colors.primary : context.pami.muted;
     return Semantics(
       button: true,
       onTap: enabled ? onTap : null,
@@ -90,18 +90,18 @@ class _Option extends StatelessWidget {
       label: '$title. $subtitle',
       excludeSemantics: true,
       child: Material(
-        color: enabled ? context.nexo.brandSoft : context.nexo.surfaceSoft,
-        borderRadius: BorderRadius.circular(NexoTokens.radiusM),
+        color: enabled ? context.pami.brandSoft : context.pami.surfaceSoft,
+        borderRadius: BorderRadius.circular(PamiTokens.radiusM),
         child: InkWell(
-          borderRadius: BorderRadius.circular(NexoTokens.radiusM),
+          borderRadius: BorderRadius.circular(PamiTokens.radiusM),
           onTap: enabled ? onTap : null,
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Icon(icon, color: color, size: 28),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(title, style: context.text.titleMedium?.copyWith(color: enabled ? null : context.nexo.muted)),
-                Text(subtitle, style: context.text.bodySmall?.copyWith(color: context.nexo.muted), maxLines: 2, overflow: TextOverflow.ellipsis),
+                Text(title, style: context.text.titleMedium?.copyWith(color: enabled ? null : context.pami.muted)),
+                Text(subtitle, style: context.text.bodySmall?.copyWith(color: context.pami.muted), maxLines: 2, overflow: TextOverflow.ellipsis),
               ]),
             ]),
           ),

@@ -87,7 +87,7 @@ class _BudgetEditorScreenState extends ConsumerState<BudgetEditorScreen> with Bu
                             })),
                 ]),
               Text(ws.isPersonal ? 'Cuenta tu parte asignada en todos tus espacios.' : 'Cuenta el total de gastos de ${ws.name}.',
-                  style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                  style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
               const SectionTitle('Límite mensual'),
               if (ws.isPersonal)
                 SegmentedButton<bool>(
@@ -102,7 +102,7 @@ class _BudgetEditorScreenState extends ConsumerState<BudgetEditorScreen> with Bu
                 Text('${formatBp(_incomeShareBp, decimals: 0)} de los ingresos registrados en el mes'),
                 Slider(value: _incomeShareBp.toDouble(), min: 100, max: 10000, divisions: 99, label: formatBp(_incomeShareBp, decimals: 0),
                     onChanged: (v) => setState(() => _incomeShareBp = v.round())),
-                Text('Si en el mes no registras ingresos, el límite será 0.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                Text('Si en el mes no registras ingresos, el límite será 0.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
               ],
               const SectionTitle('Alerta'),
               Text('Avisar al llegar al ${formatBp(_threshold, decimals: 0)}'),
@@ -110,7 +110,7 @@ class _BudgetEditorScreenState extends ConsumerState<BudgetEditorScreen> with Bu
                   onChanged: (v) => setState(() => _threshold = v.round())),
               const SectionTitle('Categorías'),
               Text(_cats.isEmpty ? 'Sin selección: cuenta todas las categorías de gasto.' : '${_cats.length} seleccionada(s)',
-                  style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                  style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
               const SizedBox(height: 8),
               Wrap(spacing: 8, runSpacing: 8, children: [
                 for (final c in cats.where((c) => c.workspaceId == null || c.workspaceId == ws.id))

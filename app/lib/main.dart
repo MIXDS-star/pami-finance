@@ -28,6 +28,6 @@ Future<void> main() async {
     // Failed requests are surfaced to the person with a retry button rather
     // than retried silently in the background.
     retry: (_, _) => null,
-    child: const NexoApp(),
+    child: const PamiApp(),
   ));
 }

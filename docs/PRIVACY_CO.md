@@ -7,7 +7,7 @@
 - **Ley Estatutaria 1581 de 2012** (protección de datos personales / habeas data).
 - **Decreto 1377 de 2013**, compilado en el **Decreto Único Reglamentario 1074 de 2015** (autorización, políticas de tratamiento, transferencias).
 - **Registro Nacional de Bases de Datos (RNBD)** ante la SIC: verificar si la empresa responsable está obligada a inscribir sus bases según los umbrales vigentes.
-- **Ley 1266 de 2008** (habeas data financiero): aplica a información crediticia reportada a centrales; NEXO no reporta ni consulta centrales, pero conviene confirmarlo.
+- **Ley 1266 de 2008** (habeas data financiero): aplica a información crediticia reportada a centrales; Pami no reporta ni consulta centrales, pero conviene confirmarlo.
 - Si se conecta con entidades financieras: normas de la Superintendencia Financiera sobre finanzas abiertas y el esquema de consentimiento de cada proveedor.
 
 ## Cómo lo aborda el producto

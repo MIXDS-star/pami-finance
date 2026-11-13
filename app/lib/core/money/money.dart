@@ -8,7 +8,7 @@ class Currency {
   final String code;
   final String symbol;
 
-  /// Decimals used by NEXO. COP uses 0 (centavos are not used in practice).
+  /// Decimals used by Pami. COP uses 0 (centavos are not used in practice).
   final int decimals;
   final String name;
 

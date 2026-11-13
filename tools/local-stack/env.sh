@@ -1,14 +1,14 @@
 # Local development stack settings. DEV ONLY — these values are public and
 # must never be used for a real project (see docs/DEPLOYMENT.md).
-export NEXO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-export NEXO_BIN="${NEXO_BIN:-/opt/sdk/bin}"
+export PAMI_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+export PAMI_BIN="${PAMI_BIN:-/opt/sdk/bin}"
 export PGBIN="${PGBIN:-/usr/lib/postgresql/16/bin}"
 export PGDATA_DIR="${PGDATA_DIR:-/opt/pgdata}"
 export PGHOST="${PGHOST:-127.0.0.1}"
 export PGPORT="${PGPORT:-54322}"
 export PGUSER="${PGUSER:-postgres}"
-export NEXO_DB="${NEXO_DB:-nexo}"
-export STACK_DIR="${STACK_DIR:-/tmp/nexo-stack}"
+export PAMI_DB="${PAMI_DB:-pami}"
+export STACK_DIR="${STACK_DIR:-/tmp/pami-stack}"
 
 export JWT_SECRET="${JWT_SECRET:-super-secret-jwt-token-with-at-least-32-characters-long}"
 export GATEWAY_PORT="${GATEWAY_PORT:-54321}"

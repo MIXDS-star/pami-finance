@@ -144,14 +144,14 @@ class _MovementsScreenState extends ConsumerState<MovementsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text('$otherCurrencies movimiento(s) en otras monedas no se suman a estos totales.',
-                          style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                          style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                   ),
                 ),
                 for (final e in groups.entries) ...[
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-                      child: Semantics(header: true, child: Text(formatDateLong(e.key), style: context.text.labelLarge?.copyWith(color: context.nexo.muted))),
+                      child: Semantics(header: true, child: Text(formatDateLong(e.key), style: context.text.labelLarge?.copyWith(color: context.pami.muted))),
                     ),
                   ),
                   SliverList.list(children: [
@@ -230,7 +230,7 @@ class _Total extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(label, style: context.text.labelMedium?.copyWith(color: context.nexo.muted)),
+        Text(label, style: context.text.labelMedium?.copyWith(color: context.pami.muted)),
         AmountText(minor, currency, style: context.text.titleMedium),
       ]);
 }

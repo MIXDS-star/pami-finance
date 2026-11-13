@@ -144,7 +144,7 @@ class _SplitEditorState extends State<SplitEditor> {
         if (_showMath)
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: context.nexo.surfaceSoft, borderRadius: BorderRadius.circular(NexoTokens.radiusS)),
+            decoration: BoxDecoration(color: context.pami.surfaceSoft, borderRadius: BorderRadius.circular(PamiTokens.radiusS)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               for (final line in result.explanation) Padding(padding: const EdgeInsets.symmetric(vertical: 2), child: Text(line, style: context.text.bodySmall)),
             ]),
@@ -223,7 +223,7 @@ class _SplitEditorState extends State<SplitEditor> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(name, maxLines: 1, overflow: TextOverflow.ellipsis),
             if (amount != null && widget.showPreview)
-              AmountText(amount, widget.currency, style: context.text.bodySmall?.copyWith(color: context.nexo.muted), semanticPrefix: 'le corresponde'),
+              AmountText(amount, widget.currency, style: context.text.bodySmall?.copyWith(color: context.pami.muted), semanticPrefix: 'le corresponde'),
           ]),
         ),
         ?input,
@@ -247,7 +247,7 @@ class _NumberBox extends StatelessWidget {
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(suffixText: suffix, isDense: true, labelText: suffix == '%' ? '%' : 'Partes'),
           onChanged: onChanged,
-          style: const TextStyle(fontFeatures: NexoTokens.tabular),
+          style: const TextStyle(fontFeatures: PamiTokens.tabular),
         ),
       );
 }

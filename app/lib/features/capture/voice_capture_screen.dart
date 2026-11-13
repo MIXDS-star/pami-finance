@@ -66,7 +66,7 @@ class _VoiceCaptureScreenState extends ConsumerState<VoiceCaptureScreen> with Bu
     }
     _deleteAudio();
     final dir = await getTemporaryDirectory();
-    _path = '${dir.path}/nexo_nota_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    _path = '${dir.path}/pami_nota_${DateTime.now().millisecondsSinceEpoch}.m4a';
     await _recorder.start(const RecordConfig(encoder: AudioEncoder.aacLc, numChannels: 1, sampleRate: 16000, bitRate: 64000), path: _path!);
     HapticFeedback.mediumImpact();
     setState(() {
@@ -149,7 +149,7 @@ class _VoiceCaptureScreenState extends ConsumerState<VoiceCaptureScreen> with Bu
             child: GestureDetector(
               onTap: busy || caps?.transcription != true ? null : (_phase == _Phase.recording ? _stop : (_phase == _Phase.transcribing ? null : _start)),
               child: AnimatedContainer(
-                duration: NexoTokens.motion,
+                duration: PamiTokens.motion,
                 width: 96,
                 height: 96,
                 decoration: BoxDecoration(

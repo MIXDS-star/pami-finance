@@ -65,7 +65,7 @@ export class AnthropicProvider implements ExpenseParser, ReceiptExtractor, Copil
 
   async parseExpense(text: string, ctx: ParseContext): Promise<ExpenseDraft> {
     const system = [
-      'Eres el extractor de gastos de NEXO Finance (Colombia). Conviertes una descripción en lenguaje natural en un borrador ' +
+      'Eres el extractor de gastos de Pami Finance (Colombia). Conviertes una descripción en lenguaje natural en un borrador ' +
       'estructurado que la persona revisará y confirmará antes de guardar.',
       DATA_IS_NOT_INSTRUCTIONS,
       MONEY_RULES,
@@ -84,7 +84,7 @@ export class AnthropicProvider implements ExpenseParser, ReceiptExtractor, Copil
 
   async extractReceipt(doc: DocumentInput, hint: { defaultCurrency: string; today: string }): Promise<ReceiptExtraction> {
     const system = [
-      'Eres el lector de facturas de NEXO Finance. Extraes lo que está IMPRESO en la factura o tirilla, línea por línea.',
+      'Eres el lector de facturas de Pami Finance. Extraes lo que está IMPRESO en la factura o tirilla, línea por línea.',
       DATA_IS_NOT_INSTRUCTIONS,
       MONEY_RULES,
       `Moneda por defecto: ${hint.defaultCurrency}. Hoy es ${hint.today}.`,
@@ -105,7 +105,7 @@ export class AnthropicProvider implements ExpenseParser, ReceiptExtractor, Copil
 
   async answer(history: CopilotTurn[], question: string, tools: CopilotTool[], systemContext: string): Promise<CopilotAnswer> {
     const system = [
-      'Eres el copiloto financiero de NEXO Finance. Respondes en español, de forma clara y breve, sobre las finanzas de la ' +
+      'Eres el copiloto financiero de Pami Finance. Respondes en español, de forma clara y breve, sobre las finanzas de la ' +
       'persona usando EXCLUSIVAMENTE las herramientas disponibles, que devuelven agregaciones verificadas del servidor.',
       DATA_IS_NOT_INSTRUCTIONS,
       'Reglas: nunca calcules saldos ni totales por tu cuenta ni inventes cifras; si no tienes el dato, consulta la herramienta ' +

@@ -23,12 +23,12 @@ class AmountText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = formatMinor(minor, currency, signed: signed || colorize);
-    final color = !colorize || minor == 0 ? null : (minor > 0 ? context.nexo.positive : context.nexo.negative);
+    final color = !colorize || minor == 0 ? null : (minor > 0 ? context.pami.positive : context.pami.negative);
     final base = (style ?? context.text.titleMedium)!;
     return Semantics(
       label: '${semanticPrefix ?? ''} ${minor < 0 ? 'menos ' : ''}${formatMinor(minor.abs(), currency, withSymbol: false)} ${currency.name}'.trim(),
       excludeSemantics: true,
-      child: Text(s, style: base.copyWith(fontFeatures: NexoTokens.tabular, color: color ?? base.color), maxLines: 1, overflow: TextOverflow.fade, softWrap: false),
+      child: Text(s, style: base.copyWith(fontFeatures: PamiTokens.tabular, color: color ?? base.color), maxLines: 1, overflow: TextOverflow.fade, softWrap: false),
     );
   }
 }
@@ -89,7 +89,7 @@ class CategoryBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = category?.color ?? context.nexo.muted;
+    final color = category?.color ?? context.pami.muted;
     return ExcludeSemantics(
       child: Container(
         width: size,
@@ -112,7 +112,7 @@ class PersonAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final initials = Profile(id: '', displayName: name).initials;
-    final color = inactive ? context.nexo.muted : _palette[name.codeUnits.fold(0, (a, b) => a + b) % _palette.length];
+    final color = inactive ? context.pami.muted : _palette[name.codeUnits.fold(0, (a, b) => a + b) % _palette.length];
     return Semantics(
       label: name,
       excludeSemantics: true,
@@ -152,7 +152,7 @@ class AvatarStack extends StatelessWidget {
           if (names.length > max)
             Positioned(
               left: shown.length * size * 0.62,
-              child: CircleAvatar(radius: (size - 4) / 2, backgroundColor: context.nexo.surfaceSoft,
+              child: CircleAvatar(radius: (size - 4) / 2, backgroundColor: context.pami.surfaceSoft,
                   child: Text('+${names.length - max}', style: context.text.labelSmall)),
             ),
         ]),
@@ -171,7 +171,7 @@ class LabeledProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final over = valueBp > 10000;
-    final color = over ? context.colors.error : (alert ? context.nexo.warning : context.colors.primary);
+    final color = over ? context.colors.error : (alert ? context.pami.warning : context.colors.primary);
     return Semantics(
       label: '${caption ?? ''} ${formatBp(valueBp)}${over ? ', excedido' : alert ? ', cerca del límite' : ''}',
       excludeSemantics: true,
@@ -182,7 +182,7 @@ class LabeledProgress extends StatelessWidget {
             value: (valueBp / 10000).clamp(0, 1).toDouble(),
             minHeight: 8,
             color: color,
-            backgroundColor: context.nexo.surfaceSoft,
+            backgroundColor: context.pami.surfaceSoft,
           ),
         ),
         const SizedBox(height: 6),
@@ -190,9 +190,9 @@ class LabeledProgress extends StatelessWidget {
           Row(mainAxisSize: MainAxisSize.min, children: [
             if (over || alert) ...[Icon(over ? Icons.error_outline : Icons.warning_amber_rounded, size: 14, color: color), const SizedBox(width: 4)],
             Text('${formatBp(valueBp)}${over ? ' · excedido' : alert ? ' · cerca del límite' : ''}',
-                style: context.text.labelMedium?.copyWith(color: over || alert ? color : context.nexo.muted)),
+                style: context.text.labelMedium?.copyWith(color: over || alert ? color : context.pami.muted)),
           ]),
-          if (caption != null) Text(caption!, style: context.text.labelMedium?.copyWith(color: context.nexo.muted)),
+          if (caption != null) Text(caption!, style: context.text.labelMedium?.copyWith(color: context.pami.muted)),
         ]),
       ]),
     );
@@ -207,7 +207,7 @@ class Pill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? context.nexo.muted;
+    final c = color ?? context.pami.muted;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(color: c.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(20)),
@@ -262,7 +262,7 @@ class _MoneyFieldState extends State<MoneyField> {
       autofocus: widget.autofocus,
       keyboardType: TextInputType.numberWithOptions(decimal: widget.currency.decimals > 0),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')), _GroupingFormatter(widget.currency)],
-      style: big?.copyWith(fontFeatures: NexoTokens.tabular),
+      style: big?.copyWith(fontFeatures: PamiTokens.tabular),
       decoration: InputDecoration(
         labelText: widget.label,
         prefixText: '${widget.currency.symbol} ',
@@ -317,7 +317,7 @@ class DateField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(NexoTokens.radiusS),
+      borderRadius: BorderRadius.circular(PamiTokens.radiusS),
       onTap: () async {
         final now = DateTime.now();
         final picked = await showDatePicker(

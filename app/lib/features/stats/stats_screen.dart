@@ -240,7 +240,7 @@ class _Kpis extends StatelessWidget {
               '${s.paidMinor > s.expenseAssignedMinor ? 'Adelantaste ${formatMinor(s.paidMinor - s.expenseAssignedMinor, currency)} por otras personas.' : s.paidMinor < s.expenseAssignedMinor ? 'Otras personas pagaron ${formatMinor(s.expenseAssignedMinor - s.paidMinor, currency)} de tu parte.' : ''}'),
           const SizedBox(height: 8),
           Text('Tasa de ahorro = (ingresos registrados − gasto asignado) ÷ ingresos registrados.',
-              style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+              style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         ]),
       ),
     ]);
@@ -256,7 +256,7 @@ class _Tile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(label, style: context.text.labelMedium?.copyWith(color: context.nexo.muted)),
+            Text(label, style: context.text.labelMedium?.copyWith(color: context.pami.muted)),
             const SizedBox(height: 4),
             FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: value),
           ]),
@@ -290,7 +290,7 @@ class _ChartCardState extends State<_ChartCard> {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Semantics(header: true, child: Text(widget.title, style: context.text.titleMedium)),
-                  Text(widget.subtitle, style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                  Text(widget.subtitle, style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                 ]),
               ),
               ?widget.action,
@@ -349,7 +349,7 @@ class _TrendChart extends StatelessWidget {
           label: 'Gráfico de barras de ingresos y gastos por mes. Usa «Ver como tabla» para leer los valores.',
           child: BarChart(BarChartData(
             maxY: maxV == 0 ? 1 : maxV * 1.15,
-            gridData: FlGridData(drawVerticalLine: false, getDrawingHorizontalLine: (_) => FlLine(color: context.nexo.border, strokeWidth: 1)),
+            gridData: FlGridData(drawVerticalLine: false, getDrawingHorizontalLine: (_) => FlLine(color: context.pami.border, strokeWidth: 1)),
             borderData: FlBorderData(show: false),
             titlesData: FlTitlesData(
               topTitles: const AxisTitles(),
@@ -357,10 +357,10 @@ class _TrendChart extends StatelessWidget {
               leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 52,
                   getTitlesWidget: (v, meta) => v == meta.max && v % meta.appliedInterval != 0
                     ? const SizedBox.shrink() // avoid the overlapping top label
-                    : SideTitleWidget(meta: meta, child: Text(compact(v), style: context.text.labelSmall?.copyWith(color: context.nexo.muted))))),
+                    : SideTitleWidget(meta: meta, child: Text(compact(v), style: context.text.labelSmall?.copyWith(color: context.pami.muted))))),
               bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true,
                   getTitlesWidget: (v, meta) => SideTitleWidget(meta: meta,
-                      child: Text(monthShort(points[v.toInt()].month.month), style: context.text.labelSmall?.copyWith(color: context.nexo.muted))))),
+                      child: Text(monthShort(points[v.toInt()].month.month), style: context.text.labelSmall?.copyWith(color: context.pami.muted))))),
             ),
             barTouchData: BarTouchData(
               touchTooltipData: BarTouchTooltipData(
@@ -421,14 +421,14 @@ class _CategoryBars extends StatelessWidget {
           excludeSemantics: true,
           child: InkWell(
             onTap: tap,
-            borderRadius: BorderRadius.circular(NexoTokens.radiusS),
+            borderRadius: BorderRadius.circular(PamiTokens.radiusS),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
                   Expanded(child: Text(name, style: context.text.bodyMedium)),
                   Text('${formatMinor(v, currency)} · ${formatBp(total == 0 ? 0 : v * 10000 ~/ total, decimals: 0)}',
-                      style: context.text.bodySmall?.copyWith(fontFeatures: NexoTokens.tabular)),
+                      style: context.text.bodySmall?.copyWith(fontFeatures: PamiTokens.tabular)),
                 ]),
                 const SizedBox(height: 4),
                 LayoutBuilder(builder: (context, c) => Align(

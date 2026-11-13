@@ -38,7 +38,7 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Aprender a invertir')),
       body: ListView(padding: const EdgeInsets.all(16), children: [
-        const Notice(kind: NoticeKind.warning, message: 'Contenido educativo. NEXO no ofrece asesoría de inversión, no recomienda productos '
+        const Notice(kind: NoticeKind.warning, message: 'Contenido educativo. Pami no ofrece asesoría de inversión, no recomienda productos '
             'ni ejecuta órdenes. Toda inversión puede perder valor. Antes de invertir, verifica que la entidad esté vigilada por la '
             'Superintendencia Financiera de Colombia y considera asesoría profesional.'),
         const SectionTitle('Antes de invertir'),
@@ -87,7 +87,7 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
             const SizedBox(height: 8),
             Text('Nominal: lo que verías en la cuenta. Real: lo que podrías comprar hoy con ese dinero tras la inflación supuesta. '
                 'No incluye comisiones, impuestos (p. ej. retención en la fuente) ni la volatilidad: el resultado real puede ser menor, '
-                'incluso con pérdidas.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                'incluso con pérdidas.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
           ]),
         ),
         const SectionTitle('Conceptos clave'),
@@ -114,7 +114,7 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
   }
 
   Widget _check(BuildContext context, bool ok, String text) => Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Icon(ok ? Icons.check_circle_outline : Icons.radio_button_unchecked, color: ok ? context.nexo.positive : context.nexo.muted),
+        Icon(ok ? Icons.check_circle_outline : Icons.radio_button_unchecked, color: ok ? context.pami.positive : context.pami.muted),
         const SizedBox(width: 8),
         Expanded(child: Text(text)),
       ]);

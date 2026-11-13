@@ -74,7 +74,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> with BusyState {
                               await _close(r.periodStart, r.currency.code, replace: true);
                             }
                           },
-                          icon: Icon(Icons.warning_amber_rounded, color: context.nexo.warning),
+                          icon: Icon(Icons.warning_amber_rounded, color: context.pami.warning),
                           label: const Text('Desactualizado'),
                         )
                       : const Icon(Icons.chevron_right),

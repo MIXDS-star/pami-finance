@@ -231,9 +231,9 @@ class _ReceiptCaptureScreenState extends ConsumerState<ReceiptCaptureScreen> wit
         if (_status != null) ...[const SizedBox(height: 12), Notice(message: _status!)],
         if (_bytes != null && _result == null) ...[
           ClipRRect(
-            borderRadius: BorderRadius.circular(NexoTokens.radiusM),
+            borderRadius: BorderRadius.circular(PamiTokens.radiusM),
             child: _image == null
-                ? Container(height: 160, color: context.nexo.surfaceSoft, child: const Center(child: Icon(Icons.picture_as_pdf_outlined, size: 48)))
+                ? Container(height: 160, color: context.pami.surfaceSoft, child: const Center(child: Icon(Icons.picture_as_pdf_outlined, size: 48)))
                 : _Preview(bytes: _bytes!, rotation: _rotation, cropX: _cropX, cropY: _cropY, enhance: _enhance,
                     aspect: _rotation % 180 == 0 ? _image!.width / _image!.height : _image!.height / _image!.width),
           ),
@@ -262,7 +262,7 @@ class _ReceiptCaptureScreenState extends ConsumerState<ReceiptCaptureScreen> wit
           ]),
           const SizedBox(height: 8),
           Text('La imagen se guarda en almacenamiento privado; solo la ven los miembros del espacio elegido.',
-              style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+              style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
           const SizedBox(height: 20),
           FilledButton(onPressed: busy ? null : _process, child: Text(busy ? 'Procesando…' : 'Procesar factura')),
           TextButton(onPressed: busy ? null : () => setState(() => _bytes = null), child: const Text('Elegir otra')),
@@ -280,7 +280,7 @@ class _ReceiptCaptureScreenState extends ConsumerState<ReceiptCaptureScreen> wit
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Pill(switch (_legibility) { 'good' => 'Buena legibilidad', 'partial' => 'Legibilidad parcial', _ => 'Difícil de leer' },
-                      icon: Icons.visibility_outlined, color: _legibility == 'good' ? context.nexo.positive : context.nexo.warning),
+                      icon: Icons.visibility_outlined, color: _legibility == 'good' ? context.pami.positive : context.pami.warning),
                 ),
             ]),
           ),

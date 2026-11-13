@@ -16,8 +16,8 @@ class Env {
   static const realtimeEnabled = bool.fromEnvironment('REALTIME_ENABLED', defaultValue: true);
 
   /// Deep link used by e-mail confirmation, password recovery and invites.
-  static const authRedirect = String.fromEnvironment('AUTH_REDIRECT_URL', defaultValue: 'co.nexofinance://auth-callback');
-  static const inviteBaseUrl = String.fromEnvironment('INVITE_BASE_URL', defaultValue: 'co.nexofinance://invite');
+  static const authRedirect = String.fromEnvironment('AUTH_REDIRECT_URL', defaultValue: 'co.pamifinance://auth-callback');
+  static const inviteBaseUrl = String.fromEnvironment('INVITE_BASE_URL', defaultValue: 'co.pamifinance://invite');
 
   static bool get isConfigured => supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty;
   static bool get isProduction => flavor == 'production';

@@ -3,6 +3,6 @@
   "SUPABASE_ANON_KEY": "<publishable/anon key of the production project>",
   "APP_FLAVOR": "production",
   "REALTIME_ENABLED": "true",
-  "AUTH_REDIRECT_URL": "co.nexofinance://auth-callback",
+  "AUTH_REDIRECT_URL": "co.pamifinance://auth-callback",
   "INVITE_BASE_URL": "https://<your-domain>/invite"
 }

@@ -29,7 +29,7 @@ class SheetHeader extends StatelessWidget {
           Semantics(header: true, child: Text(title, style: context.text.titleLarge)),
           if (subtitle != null) ...[
             const SizedBox(height: 4),
-            Text(subtitle!, style: context.text.bodyMedium?.copyWith(color: context.nexo.muted)),
+            Text(subtitle!, style: context.text.bodyMedium?.copyWith(color: context.pami.muted)),
           ],
         ]),
       );

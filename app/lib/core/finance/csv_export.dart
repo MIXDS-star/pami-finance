@@ -29,7 +29,7 @@ String _esc(String? v) {
 
 String buildMovementsCsv(List<ExportRow> rows, {bool includeNotes = false, bool includeReceipt = false}) {
   final b = StringBuffer()
-    ..writeln('# NEXO Finance · importes en unidad mínima de cada moneda (COP sin decimales; USD/EUR en centavos)')
+    ..writeln('# Pami Finance · importes en unidad mínima de cada moneda (COP sin decimales; USD/EUR en centavos)')
     ..write('fecha,tipo,espacio,concepto,comercio,categoria,moneda,importe_total,mi_parte,pagado_por_mi');
   if (includeNotes) b.write(',notas');
   if (includeReceipt) b.write(',lineas_factura');

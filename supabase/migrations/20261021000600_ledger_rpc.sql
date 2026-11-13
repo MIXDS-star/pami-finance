@@ -1,4 +1,4 @@
--- NEXO Finance · 0600 · Ledger write RPCs.
+-- Pami Finance · 0600 · Ledger write RPCs.
 --
 -- public.save_transaction is the ONLY write path for expenses, income and
 -- transfers, whatever the capture method (manual, text, voice, receipt,

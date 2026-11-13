@@ -92,7 +92,7 @@ class _SpaceCard extends ConsumerWidget {
       child: Row(children: [
         Container(
           width: 48, height: 48,
-          decoration: BoxDecoration(color: context.nexo.brandSoft, borderRadius: BorderRadius.circular(14)),
+          decoration: BoxDecoration(color: context.pami.brandSoft, borderRadius: BorderRadius.circular(14)),
           child: Icon(ws.kind.icon, color: context.colors.primary),
         ),
         const SizedBox(width: 14),
@@ -103,7 +103,7 @@ class _SpaceCard extends ConsumerWidget {
               if (ws.archived) ...[const SizedBox(width: 6), const Pill('Archivado', icon: Icons.archive_outlined)],
             ]),
             Text(ws.isPersonal ? 'Solo tú · privado' : '${ws.kind.label} · ${active.length} miembro(s) · ${ws.myRole?.label ?? ''}',
-                style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
           ]),
         ),
         if (!ws.isPersonal) AvatarStack(names: active.map((m) => m.displayName).toList()),

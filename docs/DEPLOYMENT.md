@@ -9,7 +9,7 @@
    supabase db push              # aplica supabase/migrations en orden
    ```
 3. **Auth** (Dashboard → Authentication):
-   - Site URL y Redirect URLs: `co.nexofinance://auth-callback` (y el dominio web si lo usas).
+   - Site URL y Redirect URLs: `co.pamifinance://auth-callback` (y el dominio web si lo usas).
    - Confirmación de correo **activada** y un SMTP propio (el de Supabase tiene límites muy bajos).
    - Plantillas de correo en español.
    - Opcional: Google/Apple solo cuando tengas credenciales; la app no muestra esos botones hasta entonces.
@@ -34,14 +34,14 @@ flutter run --dart-define-from-file=env/development.json
 
 ### Android
 
-- `minSdk 24`, `FlutterFragmentActivity` (biometría), permisos de Internet, micrófono, cámara y biometría, enlaces `co.nexofinance://auth-callback` e `co.nexofinance://invite/<token>`, sin respaldo en la nube y `FLAG_SECURE`.
+- `minSdk 24`, `FlutterFragmentActivity` (biometría), permisos de Internet, micrófono, cámara y biometría, enlaces `co.pamifinance://auth-callback` e `co.pamifinance://invite/<token>`, sin respaldo en la nube y `FLAG_SECURE`.
 - Firma: crea un keystore y `android/key.properties` (no versionado), configura `signingConfigs` en `android/app/build.gradle.kts`.
 - `flutter build appbundle --release --dart-define-from-file=env/production.json`.
 - Antes de publicar: icono e imagen de arranque, `applicationId` definitivo, formulario de seguridad de datos de Google Play y política de privacidad pública.
 
 ### iOS
 
-- `Info.plist` ya incluye textos de micrófono, cámara, fotos y Face ID, el esquema `co.nexofinance` y `ITSAppUsesNonExemptEncryption = false`.
+- `Info.plist` ya incluye textos de micrófono, cámara, fotos y Face ID, el esquema `co.pamifinance` y `ITSAppUsesNonExemptEncryption = false`.
 - En Xcode: equipo de firma, bundle id, objetivo mínimo iOS 13+, capacidad *Associated Domains* si usarás enlaces universales para invitaciones.
 - `flutter build ipa --release --dart-define-from-file=env/production.json`.
 - Antes de publicar: etiquetas de privacidad de App Store, política de privacidad, cuenta de prueba para revisión.
@@ -72,6 +72,6 @@ RESET=1 bash tools/local-stack/start.sh    # recrea la base y arranca todo
 bash tools/local-stack/stop.sh
 ```
 
-Variables en `tools/local-stack/env.sh` (`NEXO_BIN` apunta a los binarios de GoTrue, PostgREST y Deno). Las claves locales se firman con un secreto público de desarrollo: **nunca** las uses fuera de tu máquina. El stack local confirma correos automáticamente y no incluye Realtime (la app lo desactiva con `REALTIME_ENABLED=false`).
+Variables en `tools/local-stack/env.sh` (`PAMI_BIN` apunta a los binarios de GoTrue, PostgREST y Deno). Las claves locales se firman con un secreto público de desarrollo: **nunca** las uses fuera de tu máquina. El stack local confirma correos automáticamente y no incluye Realtime (la app lo desactiva con `REALTIME_ENABLED=false`).
 
 Con Docker, `supabase start` usa la misma carpeta `supabase/` (migraciones, `config.toml` y funciones).

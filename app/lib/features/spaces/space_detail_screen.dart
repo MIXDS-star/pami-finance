@@ -196,7 +196,7 @@ class _BalancesTab extends ConsumerWidget {
                                 }
                               : null,
                         ),
-                      Text('Mantén presionado un reembolso para anularlo.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                      Text('Mantén presionado un reembolso para anularlo.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                     ]),
             ),
           ]);
@@ -243,7 +243,7 @@ class _BalancesTab extends ConsumerWidget {
                     Text(names[b.userId] ?? 'Exmiembro', style: context.text.titleSmall),
                     Text('Pagó ${formatMinor(b.paidMinor, currency)} · le corresponde ${formatMinor(b.assignedMinor, currency)}'
                         '${b.sentMinor + b.receivedMinor > 0 ? ' · reembolsos: envió ${formatMinor(b.sentMinor, currency)}, recibió ${formatMinor(b.receivedMinor, currency)}' : ''}',
-                        style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                        style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                   ]),
                 ),
                 AmountText(b.netMinor, currency, colorize: true, semanticPrefix: b.netMinor >= 0 ? 'le deben' : 'debe'),
@@ -251,7 +251,7 @@ class _BalancesTab extends ConsumerWidget {
             ),
           const Divider(),
           Text('Saldo = pagado − lo que le corresponde + reembolsos enviados − reembolsos recibidos. '
-              'Positivo: le deben; negativo: debe.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+              'Positivo: le deben; negativo: debe.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         ]),
       ),
     ]);
@@ -369,7 +369,7 @@ class _MembersTab extends ConsumerWidget {
             ),
           if (former.isNotEmpty) ...[
             const SectionTitle('Antiguos miembros'),
-            Text('Su historial se conserva para que los saldos sigan siendo correctos.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+            Text('Su historial se conserva para que los saldos sigan siendo correctos.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
             for (final m in former)
               ListTile(contentPadding: EdgeInsets.zero, leading: PersonAvatar(name: m.displayName, inactive: true),
                   title: Text(m.displayName), subtitle: const Text('Ya no es miembro')),
@@ -473,7 +473,7 @@ class _InviteSheetState extends ConsumerState<InviteSheet> with BusyState {
         const Notice(message: 'El envío automático por correo requiere configurar un proveedor de e-mail (pendiente). Por ahora comparte el enlace.'),
         const SizedBox(height: 16),
         FilledButton.icon(
-          onPressed: () => SharePlus.instance.share(ShareParams(text: 'Te invito a "${widget.ws.name}" en NEXO Finance: $_link')),
+          onPressed: () => SharePlus.instance.share(ShareParams(text: 'Te invito a "${widget.ws.name}" en Pami Finance: $_link')),
           icon: const Icon(Icons.share),
           label: const Text('Compartir'),
         ),

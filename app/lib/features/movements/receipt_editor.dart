@@ -159,7 +159,7 @@ class _ReceiptEditorState extends State<ReceiptEditor> {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: InkWell(
-        borderRadius: BorderRadius.circular(NexoTokens.radiusM),
+        borderRadius: BorderRadius.circular(PamiTokens.radiusM),
         onTap: () => _editLine(i),
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -169,15 +169,15 @@ class _ReceiptEditorState extends State<ReceiptEditor> {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(line.description.isEmpty ? 'Sin descripción' : line.description, style: context.text.titleSmall),
                   if (line.rawText != null && line.rawText != line.description)
-                    Text('Leído: «${line.rawText}»', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                    Text('Leído: «${line.rawText}»', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                 ]),
               ),
               AmountText(line.lineTotalMinor, widget.currency, style: context.text.titleSmall),
             ]),
             const SizedBox(height: 6),
             Wrap(spacing: 6, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
-              if (line.isAdjustment) Pill('Ajuste manual', icon: Icons.tune, color: context.nexo.info),
-              if (lowConfidence) Pill('Revisar lectura', icon: Icons.visibility_outlined, color: context.nexo.warning),
+              if (line.isAdjustment) Pill('Ajuste manual', icon: Icons.tune, color: context.pami.info),
+              if (lowConfidence) Pill('Revisar lectura', icon: Icons.visibility_outlined, color: context.pami.warning),
               if (shared) ...[
                 Pill(_assignLabel(line.rule), icon: Icons.call_split, color: err != null ? context.colors.error : context.colors.primary),
                 for (final m in widget.members.where((m) => m.active))
@@ -246,9 +246,9 @@ class _Reconciliation extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: (ok ? context.nexo.positive : context.nexo.warning).withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(NexoTokens.radiusS),
-        border: Border.all(color: (ok ? context.nexo.positive : context.nexo.warning).withValues(alpha: 0.4)),
+        color: (ok ? context.pami.positive : context.pami.warning).withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(PamiTokens.radiusS),
+        border: Border.all(color: (ok ? context.pami.positive : context.pami.warning).withValues(alpha: 0.4)),
       ),
       child: Column(children: [
         row('Suma de líneas', receipt.linesTotal),
@@ -259,7 +259,7 @@ class _Reconciliation extends StatelessWidget {
         Semantics(
           liveRegion: true,
           child: Row(children: [
-            Icon(ok ? Icons.check_circle_outline : Icons.warning_amber_rounded, color: ok ? context.nexo.positive : context.nexo.warning, size: 20),
+            Icon(ok ? Icons.check_circle_outline : Icons.warning_amber_rounded, color: ok ? context.pami.positive : context.pami.warning, size: 20),
             const SizedBox(width: 8),
             Expanded(
               child: Text(ok ? 'La factura cuadra con el total pagado.'

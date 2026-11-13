@@ -1,4 +1,4 @@
--- NEXO Finance · 0700 · Verifiable aggregations, budgets, goals, recurring
+-- Pami Finance · 0700 · Verifiable aggregations, budgets, goals, recurring
 -- calendar, monthly close, data export and account deletion.
 --
 -- Every aggregation is SECURITY INVOKER: RLS decides what is visible, so the
@@ -351,7 +351,7 @@ $$;
 create or replace function public.export_my_data()
 returns jsonb language sql stable security invoker set search_path = '' as $$
   select jsonb_build_object(
-    'format', 'nexo-export-v1',
+    'format', 'pami-export-v1',
     'generated_at', now(),
     'money_format', 'Importes enteros en la unidad mínima de cada moneda (COP sin decimales).',
     'profile', (select to_jsonb(p) from public.profiles p where p.id = auth.uid()),

@@ -1,4 +1,4 @@
--- NEXO Finance · 0400 · Row Level Security, grants, storage and realtime.
+-- Pami Finance · 0400 · Row Level Security, grants, storage and realtime.
 --
 -- Model (docs/SECURITY.md):
 --   * RLS is enabled on every table in `public`.

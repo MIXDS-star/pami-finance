@@ -1,6 +1,6 @@
 {
-    "name": "nexo_finance",
-    "short_name": "nexo_finance",
+    "name": "pami_finance",
+    "short_name": "pami_finance",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

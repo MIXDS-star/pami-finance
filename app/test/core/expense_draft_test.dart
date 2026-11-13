@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexo_finance/core/finance/expense_draft.dart';
-import 'package:nexo_finance/core/finance/receipt_engine.dart';
-import 'package:nexo_finance/core/finance/split_rules.dart';
-import 'package:nexo_finance/core/money/money.dart';
+import 'package:pami_finance/core/finance/expense_draft.dart';
+import 'package:pami_finance/core/finance/receipt_engine.dart';
+import 'package:pami_finance/core/finance/split_rules.dart';
+import 'package:pami_finance/core/money/money.dart';
 
 ExpenseDraft draft({int? total = 300000, SplitRule? rule, ReceiptDraft? receipt}) => ExpenseDraft(
       clientRequestId: 'req-1',

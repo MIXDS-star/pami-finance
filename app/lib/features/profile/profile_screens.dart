@@ -76,7 +76,7 @@ class ProfileScreen extends ConsumerWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(16),
-          child: Text('NEXO Finance · ${Env.flavor}', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+          child: Text('Pami Finance · ${Env.flavor}', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         ),
       ]),
     );
@@ -467,7 +467,7 @@ class _DataPrivacyScreenState extends ConsumerState<DataPrivacyScreen> with Busy
   Future<void> _exportJson() => runBusy(() async {
         final data = await ref.read(profileRepositoryProvider).exportData();
         final bytes = Uint8List.fromList(utf8.encode(const JsonEncoder.withIndent('  ').convert(data)));
-        await _share(bytes, 'nexo-mis-datos.json', 'application/json');
+        await _share(bytes, 'pami-mis-datos.json', 'application/json');
       }, onError: (e) => showFailure(context, e));
 
   Future<void> _exportCsv() => runBusy(() async {
@@ -496,7 +496,7 @@ class _DataPrivacyScreenState extends ConsumerState<DataPrivacyScreen> with Busy
           ));
         }
         final csv = buildMovementsCsv(rows, includeNotes: _notes, includeReceipt: _receipt);
-        await _share(Uint8List.fromList(utf8.encode(csv)), 'nexo-movimientos-${isoDate(range.start)}-${isoDate(range.end)}.csv', 'text/csv');
+        await _share(Uint8List.fromList(utf8.encode(csv)), 'pami-movimientos-${isoDate(range.start)}-${isoDate(range.end)}.csv', 'text/csv');
       }, onError: (e) => showFailure(context, e));
 
   @override
@@ -539,7 +539,7 @@ class _DataPrivacyScreenState extends ConsumerState<DataPrivacyScreen> with Busy
         CheckboxListTile(contentPadding: EdgeInsets.zero, value: _receipt, onChanged: (v) => setState(() => _receipt = v ?? false),
             title: const Text('Incluir líneas de factura')),
         Text('Formato monetario: enteros en la unidad mínima de cada moneda (COP sin decimales).',
-            style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+            style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         const SizedBox(height: 8),
         FilledButton.icon(onPressed: busy ? null : _exportCsv, icon: const Icon(Icons.download), label: const Text('Exportar CSV')),
         const SizedBox(height: 4),
@@ -580,7 +580,7 @@ class AiStatusScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final caps = ref.watch(aiCapabilitiesProvider);
     Widget row(String title, bool on, String detail) => ListTile(
-          leading: Icon(on ? Icons.check_circle_outline : Icons.pending_outlined, color: on ? context.nexo.positive : context.nexo.muted),
+          leading: Icon(on ? Icons.check_circle_outline : Icons.pending_outlined, color: on ? context.pami.positive : context.pami.muted),
           title: Text(title),
           subtitle: Text('${on ? 'Configurado' : 'Pendiente de configuración'} · $detail'),
         );

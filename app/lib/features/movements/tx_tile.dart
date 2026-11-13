@@ -45,14 +45,14 @@ class TxTile extends StatelessWidget {
       ),
       title: Row(children: [
         Flexible(child: Text(tx.description, maxLines: 1, overflow: TextOverflow.ellipsis)),
-        if (tx.receipt != null) ...[const SizedBox(width: 6), Icon(Icons.receipt_outlined, size: 14, color: context.nexo.muted, semanticLabel: 'Con factura')],
+        if (tx.receipt != null) ...[const SizedBox(width: 6), Icon(Icons.receipt_outlined, size: 14, color: context.pami.muted, semanticLabel: 'Con factura')],
       ]),
       subtitle: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
         AmountText(tx.isExpense ? -amount : amount, tx.currency, signed: signed, colorize: tx.isIncome,
             semanticPrefix: prefix, style: context.text.titleSmall),
         if (shared && tx.isExpense)
-          Text('de ${formatMinor(tx.totalMinor, tx.currency)}', style: context.text.labelSmall?.copyWith(color: context.nexo.muted)),
+          Text('de ${formatMinor(tx.totalMinor, tx.currency)}', style: context.text.labelSmall?.copyWith(color: context.pami.muted)),
       ]),
     );
   }

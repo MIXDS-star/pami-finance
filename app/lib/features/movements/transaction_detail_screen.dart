@@ -121,7 +121,7 @@ class _BodyState extends ConsumerState<_Body> with BusyState {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(t.description, style: context.text.titleLarge),
             Text([cat?.name ?? (t.isTransfer ? 'Transferencia' : 'Sin categoría'), formatDateLong(t.occurredOn)].join(' · '),
-                style: context.text.bodyMedium?.copyWith(color: context.nexo.muted)),
+                style: context.text.bodyMedium?.copyWith(color: context.pami.muted)),
           ]),
         ),
       ]),
@@ -157,7 +157,7 @@ class _BodyState extends ConsumerState<_Body> with BusyState {
               trailing: AmountText(s.amountMinor, t.currency, semanticPrefix: 'le corresponde'),
             ),
           Text('Pagar no es lo mismo que gastar: cada persona registra como gasto solo su parte. '
-              'La diferencia se refleja en los saldos del espacio.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+              'La diferencia se refleja en los saldos del espacio.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         ],
       ],
       if (t.receipt != null) _ReceiptSection(t: t, people: people, onOpen: t.receipt!.storagePath == null ? null : _openReceipt),
@@ -240,11 +240,11 @@ class _ReceiptSection extends StatelessWidget {
           if (r.merchantName != null) r.merchantName!,
           if (r.merchantTaxId != null) 'NIT ${r.merchantTaxId}',
           if (r.invoiceNumber != null) 'Factura ${r.invoiceNumber}',
-        ].join(' · '), style: context.text.bodyMedium?.copyWith(color: context.nexo.muted)),
+        ].join(' · '), style: context.text.bodyMedium?.copyWith(color: context.pami.muted)),
       if (r.extractionStatus == 'completed')
         Padding(
           padding: const EdgeInsets.only(top: 4),
-          child: Text('Leída automáticamente y revisada antes de guardar.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+          child: Text('Leída automáticamente y revisada antes de guardar.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         ),
       const SizedBox(height: 8),
       for (final i in r.items)

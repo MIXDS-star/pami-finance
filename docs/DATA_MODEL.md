@@ -19,7 +19,7 @@ Migraciones versionadas en `supabase/migrations` (orden por prefijo):
 |---|---|
 | `profiles` | Nombre visible (lo único que ven otros miembros). Sobrevive anonimizado a la eliminación de cuenta. |
 | `user_preferences` | País, moneda, zona horaria, tema, ingresos, notificaciones, onboarding. Solo el titular. |
-| `currencies` | Código ISO y decimales usados por NEXO (COP = 0). |
+| `currencies` | Código ISO y decimales usados por Pami (COP = 0). |
 | `workspaces` | Espacio personal o compartido: tipo, moneda base, regla de reparto por defecto, archivo, versión. |
 | `workspace_members` | Pertenencia con rol y estado (`active`, `left`, `removed`). Nunca se borra: conserva el historial. |
 | `workspace_invitations` | Invitación con hash SHA-256 del token, rol, correo opcional, vencimiento y estado. |

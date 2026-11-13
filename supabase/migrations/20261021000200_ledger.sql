@@ -1,4 +1,4 @@
--- NEXO Finance · 0200 · Ledger: transactions, payments, splits, receipts and
+-- Pami Finance · 0200 · Ledger: transactions, payments, splits, receipts and
 -- settlements, plus integrity rules enforced at COMMIT time.
 --
 -- Accounting model (docs/DATA_MODEL.md#ledger):

@@ -1,4 +1,4 @@
-package co.nexofinance.nexo_finance
+package co.pamifinance.pami_finance
 
 import android.os.Bundle
 import android.view.WindowManager

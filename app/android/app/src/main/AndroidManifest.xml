@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <uses-feature android:name="android.hardware.microphone" android:required="false"/>
     <application
-        android:label="NEXO Finance"
+        android:label="Pami Finance"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -45,13 +45,13 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="co.nexofinance" android:host="auth-callback"/>
+                <data android:scheme="co.pamifinance" android:host="auth-callback"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="co.nexofinance" android:host="invite"/>
+                <data android:scheme="co.pamifinance" android:host="invite"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

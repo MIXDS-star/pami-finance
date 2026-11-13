@@ -39,7 +39,7 @@ class AppShell extends StatelessWidget {
         Expanded(child: MediaQuery.removePadding(context: context, removeTop: false, child: shell)),
       ]),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: context.colors.surface, border: Border(top: BorderSide(color: context.nexo.border))),
+        decoration: BoxDecoration(color: context.colors.surface, border: Border(top: BorderSide(color: context.pami.border))),
         child: SafeArea(
           top: false,
           child: SizedBox(
@@ -68,7 +68,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? context.colors.primary : context.nexo.muted;
+    final color = selected ? context.colors.primary : context.pami.muted;
     return Semantics(
       button: true,
       onTap: onTap,
@@ -80,9 +80,9 @@ class _NavItem extends StatelessWidget {
         radius: 36,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           AnimatedContainer(
-            duration: NexoTokens.motionFast,
+            duration: PamiTokens.motionFast,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
-            decoration: BoxDecoration(color: selected ? context.nexo.brandSoft : Colors.transparent, borderRadius: BorderRadius.circular(14)),
+            decoration: BoxDecoration(color: selected ? context.pami.brandSoft : Colors.transparent, borderRadius: BorderRadius.circular(14)),
             child: Icon(selected ? selectedIcon : icon, color: color, size: 24),
           ),
           const SizedBox(height: 2),

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexo_finance/core/finance/csv_export.dart';
-import 'package:nexo_finance/core/finance/import_parser.dart';
-import 'package:nexo_finance/core/finance/local_parser.dart';
-import 'package:nexo_finance/core/finance/projections.dart';
+import 'package:pami_finance/core/finance/csv_export.dart';
+import 'package:pami_finance/core/finance/import_parser.dart';
+import 'package:pami_finance/core/finance/local_parser.dart';
+import 'package:pami_finance/core/finance/projections.dart';
 
 void main() {
   final today = DateTime(2026, 10, 21); // a Wednesday

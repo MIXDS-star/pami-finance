@@ -120,7 +120,7 @@ class _SummaryCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(monthSummaryProvider(month));
     return Card(
-      color: context.nexo.brandSoft,
+      color: context.pami.brandSoft,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: AsyncView(
@@ -129,7 +129,7 @@ class _SummaryCard extends ConsumerWidget {
           onRetry: () => ref.invalidate(monthSummaryProvider(month)),
           data: (sum) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Expanded(child: Text('Tu gasto del mes', style: context.text.titleSmall?.copyWith(color: context.nexo.muted))),
+              Expanded(child: Text('Tu gasto del mes', style: context.text.titleSmall?.copyWith(color: context.pami.muted))),
               IconButton(
                 tooltip: 'Cómo se calcula',
                 visualDensity: VisualDensity.compact,
@@ -140,7 +140,7 @@ class _SummaryCard extends ConsumerWidget {
             AmountText(sum.expenseAssignedMinor, currency, style: context.text.displaySmall, semanticPrefix: 'Tu gasto del mes'),
             if (sum.expenseSharedMinor > 0)
               Text('Incluye ${formatMinor(sum.expenseSharedMinor, currency)} de tu parte en gastos compartidos',
-                  style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                  style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
             const SizedBox(height: 16),
             Row(children: [
               Expanded(child: _Metric(label: 'Ingresos', child: AmountText(sum.incomeMinor, currency, style: context.text.titleMedium))),
@@ -166,7 +166,7 @@ class _SummaryCard extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text('Mes en curso: las cifras cambiarán a medida que registres movimientos.',
-                    style: context.text.labelSmall?.copyWith(color: context.nexo.muted)),
+                    style: context.text.labelSmall?.copyWith(color: context.pami.muted)),
               ),
           ]),
         ),
@@ -207,7 +207,7 @@ class _Metric extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(label, style: context.text.labelMedium?.copyWith(color: context.nexo.muted)),
+        Text(label, style: context.text.labelMedium?.copyWith(color: context.pami.muted)),
         const SizedBox(height: 2),
         child,
       ]);

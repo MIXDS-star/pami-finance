@@ -11,7 +11,7 @@ echo "== Database"; tools/test-db.sh | tail -1
 curl -sf "$PUBLIC_URL/health" >/dev/null || bash tools/local-stack/start.sh >/dev/null
 # Recreating the test database can make PostgREST refresh its cache mid-way: reload it explicitly.
 sleep 2
-psql -X -q -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d nexo -c "notify pgrst, 'reload schema'" >/dev/null
+psql -X -q -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PAMI_DB" -c "notify pgrst, 'reload schema'" >/dev/null
 for i in $(seq 1 20); do
   code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$PUBLIC_URL/rest/v1/rpc/consume_rate_limit" -H "apikey: $ANON_KEY" \
     -H 'content-type: application/json' -d '{"p_bucket":"probe","p_max":1,"p_window_seconds":1}')
@@ -19,8 +19,8 @@ for i in $(seq 1 20); do
   sleep 0.5
 done
 echo "== Edge Functions"
-LOCAL_STACK=1 SUPABASE_URL="$PUBLIC_URL" SUPABASE_ANON_KEY="$ANON_KEY" "$NEXO_BIN/deno" test -q --allow-net --allow-env \
-  --config supabase/functions/deno.json supabase/functions/tests/ > /tmp/nexo-stack/deno-tests.log 2>&1; grep -E "passed|failed" /tmp/nexo-stack/deno-tests.log | tail -1
+LOCAL_STACK=1 SUPABASE_URL="$PUBLIC_URL" SUPABASE_ANON_KEY="$ANON_KEY" "$PAMI_BIN/deno" test -q --allow-net --allow-env \
+  --config supabase/functions/deno.json supabase/functions/tests/ > /tmp/pami-stack/deno-tests.log 2>&1; grep -E "passed|failed" /tmp/pami-stack/deno-tests.log | tail -1
 echo "== Flutter"
 (cd app && flutter analyze | tail -1 && flutter test | tail -1)
 if [[ "${E2E:-1}" == "1" ]]; then

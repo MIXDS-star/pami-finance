@@ -1,5 +1,5 @@
 -- Local-only bootstrap that reproduces the pieces of a hosted Supabase
--- project that NEXO migrations depend on (roles, schemas, storage, realtime).
+-- project that Pami migrations depend on (roles, schemas, storage, realtime).
 -- Never run this against a real Supabase project: they already exist there.
 
 do $$

@@ -41,7 +41,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with BusySt
 
   void _go(int step) {
     setState(() => _step = step);
-    _page.animateToPage(step, duration: NexoTokens.motion, curve: Curves.easeOutCubic);
+    _page.animateToPage(step, duration: PamiTokens.motion, curve: Curves.easeOutCubic);
   }
 
   Future<void> _finish() async {
@@ -124,7 +124,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> with BusySt
                   onChanged: (v) => setState(() => _currency = v ?? 'COP'),
                 ),
                 const SizedBox(height: 12),
-                const Notice(message: 'Por ahora NEXO está disponible en español para Colombia. Zona horaria: America/Bogota.'),
+                const Notice(message: 'Por ahora Pami está disponible en español para Colombia. Zona horaria: America/Bogota.'),
               ]),
             ),
             _StepPage(
@@ -244,7 +244,7 @@ class _StepPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(padding: const EdgeInsets.all(24), children: [
         Semantics(header: true, child: Text(title, style: context.text.headlineSmall)),
-        if (subtitle != null) ...[const SizedBox(height: 8), Text(subtitle!, style: context.text.bodyLarge?.copyWith(color: context.nexo.muted))],
+        if (subtitle != null) ...[const SizedBox(height: 8), Text(subtitle!, style: context.text.bodyLarge?.copyWith(color: context.pami.muted))],
         const SizedBox(height: 24),
         child,
       ]);

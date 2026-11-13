@@ -265,7 +265,7 @@ try {
 } catch (e) {
   console.error('\nE2E FAILED:', e.message);
   for (const [c, ctx] of browser.contexts().entries()) {
-    for (const p of ctx.pages()) await p.screenshot({ path: `/tmp/nexo-stack/fail-ctx${c}.png` }).catch(() => {});
+    for (const p of ctx.pages()) await p.screenshot({ path: `/tmp/pami-stack/fail-ctx${c}.png` }).catch(() => {});
   }
   process.exitCode = 1;
 } finally {

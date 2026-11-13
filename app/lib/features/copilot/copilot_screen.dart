@@ -76,7 +76,7 @@ class _CopilotScreenState extends ConsumerState<CopilotScreen> {
   }
 
   void _toBottom() => WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (_scroll.hasClients) _scroll.animateTo(_scroll.position.maxScrollExtent, duration: NexoTokens.motion, curve: Curves.easeOut);
+        if (_scroll.hasClients) _scroll.animateTo(_scroll.position.maxScrollExtent, duration: PamiTokens.motion, curve: Curves.easeOut);
       });
 
   @override
@@ -155,8 +155,8 @@ class _Bubble extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.85),
         decoration: BoxDecoration(
-          color: mine ? context.nexo.brandSoft : (m.error ? context.colors.error.withValues(alpha: 0.08) : context.nexo.surfaceSoft),
-          borderRadius: BorderRadius.circular(NexoTokens.radiusM),
+          color: mine ? context.pami.brandSoft : (m.error ? context.colors.error.withValues(alpha: 0.08) : context.pami.surfaceSoft),
+          borderRadius: BorderRadius.circular(PamiTokens.radiusM),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SelectableText(m.text),
@@ -168,7 +168,7 @@ class _Bubble extends StatelessWidget {
               final range = input['from'] != null ? ' ${input['from']} a ${input['to']}' : '';
               final ws = input['workspace'] != null ? ' (${input['workspace']})' : '';
               return '$label$range$ws';
-            }).toSet().join('; ')}', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+            }).toSet().join('; ')}', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
           ],
         ]),
       ),

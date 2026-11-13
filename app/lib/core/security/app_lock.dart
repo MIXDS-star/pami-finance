@@ -17,7 +17,7 @@ class AppLockState {
 }
 
 class AppLock extends AsyncNotifier<AppLockState> {
-  static const _key = 'nexo.app_lock.enabled';
+  static const _key = 'pami.app_lock.enabled';
   static const _grace = Duration(seconds: 60);
   SecureKeyValue get _storage => ref.read(secureKeyValueProvider);
   final _auth = LocalAuthentication();
@@ -58,7 +58,7 @@ class AppLock extends AsyncNotifier<AppLockState> {
 
   Future<void> unlock() async {
     final s = await future;
-    if (await _authenticate('Desbloquea NEXO Finance')) {
+    if (await _authenticate('Desbloquea Pami Finance')) {
       state = AsyncData(AppLockState(enabled: s.enabled, locked: false, supported: s.supported));
     }
   }
@@ -117,7 +117,7 @@ class _LockGateState extends ConsumerState<LockGate> with WidgetsBindingObserver
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Icon(Icons.lock_outline, size: 48, color: context.colors.primary),
                   const SizedBox(height: 16),
-                  Text('NEXO Finance está bloqueado', style: context.text.titleLarge),
+                  Text('Pami Finance está bloqueado', style: context.text.titleLarge),
                   const SizedBox(height: 24),
                   FilledButton.icon(
                     onPressed: () => ref.read(appLockProvider.notifier).unlock(),

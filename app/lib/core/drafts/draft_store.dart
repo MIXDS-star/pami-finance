@@ -56,7 +56,7 @@ class MemoryKeyValue implements SecureKeyValue {
 final secureKeyValueProvider = Provider<SecureKeyValue>((ref) => const OsSecureKeyValue());
 
 class DraftStore extends AsyncNotifier<List<PendingDraft>> {
-  static const _key = 'nexo.pending_drafts.v1';
+  static const _key = 'pami.pending_drafts.v1';
   SecureKeyValue get _storage => ref.read(secureKeyValueProvider);
 
   @override

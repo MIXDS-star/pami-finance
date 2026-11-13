@@ -101,7 +101,7 @@ class GoalDetailScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             Text('Los aportes registran el dinero que apartas para la meta. Moverlo realmente entre cuentas es una acción tuya fuera de la app.',
-                style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
           ]);
         },
       ),

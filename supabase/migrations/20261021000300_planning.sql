@@ -1,4 +1,4 @@
--- NEXO Finance · 0300 · Budgets, goals, recurring items, monthly reports,
+-- Pami Finance · 0300 · Budgets, goals, recurring items, monthly reports,
 -- AI insights, notifications, imports, integrations and audit trail.
 
 -- ---------------------------------------------------------------------------

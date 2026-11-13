@@ -1,5 +1,5 @@
 {
-  "name": "nexo-e2e",
+  "name": "pami-e2e",
   "private": true,
   "type": "module",
   "description": "End-to-end tests: Flutter web build against the local stack",

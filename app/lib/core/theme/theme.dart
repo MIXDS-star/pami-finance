@@ -1,4 +1,4 @@
-/// NEXO visual system: emerald/teal brand, warm neutrals, discreet accents.
+/// Pami visual system: emerald/teal brand, warm neutrals, discreet accents.
 /// Status is never conveyed by color alone: amounts carry signs and labels,
 /// alerts carry icons and text.
 library;
@@ -6,7 +6,7 @@ library;
 import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
 
-class NexoTokens {
+class PamiTokens {
   static const radiusS = 10.0;
   static const radiusM = 16.0;
   static const radiusL = 24.0;
@@ -23,8 +23,8 @@ class NexoTokens {
 }
 
 @immutable
-class NexoColors extends ThemeExtension<NexoColors> {
-  const NexoColors({
+class PamiColors extends ThemeExtension<PamiColors> {
+  const PamiColors({
     required this.positive,
     required this.negative,
     required this.warning,
@@ -44,7 +44,7 @@ class NexoColors extends ThemeExtension<NexoColors> {
   final Color border;
   final Color brandSoft;
 
-  static const light = NexoColors(
+  static const light = PamiColors(
     positive: Color(0xFF1E7A4F),
     negative: Color(0xFFB4442F),
     warning: Color(0xFF9A6A00),
@@ -55,7 +55,7 @@ class NexoColors extends ThemeExtension<NexoColors> {
     brandSoft: Color(0xFFE1F2EC),
   );
 
-  static const dark = NexoColors(
+  static const dark = PamiColors(
     positive: Color(0xFF6FCF9F),
     negative: Color(0xFFF08C76),
     warning: Color(0xFFE8C062),
@@ -67,9 +67,9 @@ class NexoColors extends ThemeExtension<NexoColors> {
   );
 
   @override
-  NexoColors copyWith({Color? positive, Color? negative, Color? warning, Color? info, Color? muted,
+  PamiColors copyWith({Color? positive, Color? negative, Color? warning, Color? info, Color? muted,
           Color? surfaceSoft, Color? border, Color? brandSoft}) =>
-      NexoColors(
+      PamiColors(
         positive: positive ?? this.positive,
         negative: negative ?? this.negative,
         warning: warning ?? this.warning,
@@ -81,9 +81,9 @@ class NexoColors extends ThemeExtension<NexoColors> {
       );
 
   @override
-  NexoColors lerp(NexoColors? other, double t) {
+  PamiColors lerp(PamiColors? other, double t) {
     if (other == null) return this;
-    return NexoColors(
+    return PamiColors(
       positive: Color.lerp(positive, other.positive, t)!,
       negative: Color.lerp(negative, other.negative, t)!,
       warning: Color.lerp(warning, other.warning, t)!,
@@ -96,8 +96,8 @@ class NexoColors extends ThemeExtension<NexoColors> {
   }
 }
 
-extension NexoThemeX on BuildContext {
-  NexoColors get nexo => Theme.of(this).extension<NexoColors>()!;
+extension PamiThemeX on BuildContext {
+  PamiColors get pami => Theme.of(this).extension<PamiColors>()!;
   ColorScheme get colors => Theme.of(this).colorScheme;
   TextTheme get text => Theme.of(this).textTheme;
 }
@@ -116,12 +116,12 @@ ThemeData buildTheme(Brightness brightness) {
     onSurface: dark ? const Color(0xFFECE8E1) : const Color(0xFF1F2421),
     error: dark ? const Color(0xFFF08C76) : const Color(0xFFB4442F),
   );
-  final ext = dark ? NexoColors.dark : NexoColors.light;
+  final ext = dark ? PamiColors.dark : PamiColors.light;
   final background = dark ? const Color(0xFF0F1110) : const Color(0xFFFAF8F5);
   final base = ThemeData(useMaterial3: true, colorScheme: scheme, brightness: brightness);
   final text = base.textTheme.apply(bodyColor: scheme.onSurface, displayColor: scheme.onSurface).copyWith(
         displaySmall: base.textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.5,
-            fontFeatures: NexoTokens.tabular),
+            fontFeatures: PamiTokens.tabular),
         headlineMedium: base.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.3),
         headlineSmall: base.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
         titleLarge: base.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
@@ -145,14 +145,14 @@ ThemeData buildTheme(Brightness brightness) {
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(NexoTokens.radiusM),
+        borderRadius: BorderRadius.circular(PamiTokens.radiusM),
         side: BorderSide(color: ext.border),
       ),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         minimumSize: const Size(64, 52),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NexoTokens.radiusM)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(PamiTokens.radiusM)),
         textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
       ),
     ),
@@ -160,7 +160,7 @@ ThemeData buildTheme(Brightness brightness) {
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(64, 52),
         side: BorderSide(color: ext.border),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NexoTokens.radiusM)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(PamiTokens.radiusM)),
         textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
       ),
     ),
@@ -171,26 +171,26 @@ ThemeData buildTheme(Brightness brightness) {
       filled: true,
       fillColor: ext.surfaceSoft,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(NexoTokens.radiusS), borderSide: BorderSide.none),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(NexoTokens.radiusS), borderSide: BorderSide.none),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(PamiTokens.radiusS), borderSide: BorderSide.none),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(PamiTokens.radiusS), borderSide: BorderSide.none),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(NexoTokens.radiusS),
+        borderRadius: BorderRadius.circular(PamiTokens.radiusS),
         borderSide: BorderSide(color: scheme.primary, width: 1.6),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(NexoTokens.radiusS),
+        borderRadius: BorderRadius.circular(PamiTokens.radiusS),
         borderSide: BorderSide(color: scheme.error, width: 1.2),
       ),
     ),
     chipTheme: base.chipTheme.copyWith(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NexoTokens.radiusS)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(PamiTokens.radiusS)),
       side: BorderSide(color: ext.border),
     ),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: scheme.surface,
       surfaceTintColor: Colors.transparent,
       showDragHandle: true,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(NexoTokens.radiusL))),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(PamiTokens.radiusL))),
     ),
     dividerTheme: DividerThemeData(color: ext.border, space: 1, thickness: 1),
     listTileTheme: const ListTileThemeData(contentPadding: EdgeInsets.symmetric(horizontal: 16)),

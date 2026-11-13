@@ -1,8 +1,8 @@
 {
-  "name": "nexo-local-stack",
+  "name": "pami-local-stack",
   "private": true,
   "type": "module",
-  "description": "Docker-less local Supabase-compatible gateway for NEXO development",
+  "description": "Docker-less local Supabase-compatible gateway for Pami development",
   "dependencies": {
     "pg": "8.13.1"
   }

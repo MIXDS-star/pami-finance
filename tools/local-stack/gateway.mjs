@@ -17,7 +17,7 @@ import pg from 'pg';
 const env = process.env;
 const PORT = Number(env.GATEWAY_PORT ?? 54321);
 const SECRET = env.JWT_SECRET;
-const STORAGE_DIR = path.join(env.STACK_DIR ?? '/tmp/nexo-stack', 'storage');
+const STORAGE_DIR = path.join(env.STACK_DIR ?? '/tmp/pami-stack', 'storage');
 const upstream = {
   auth: Number(env.AUTH_PORT ?? 9999),
   rest: Number(env.REST_PORT ?? 3001),
@@ -25,7 +25,7 @@ const upstream = {
 };
 const pool = new pg.Pool({
   host: env.PGHOST ?? '127.0.0.1', port: Number(env.PGPORT ?? 54322),
-  user: 'postgres', database: env.NEXO_DB ?? 'nexo', max: 5,
+  user: 'postgres', database: env.PAMI_DB ?? 'pami', max: 5,
 });
 
 const CORS = {

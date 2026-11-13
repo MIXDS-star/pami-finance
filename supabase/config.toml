@@ -1,7 +1,7 @@
 # Supabase CLI configuration (local development with Docker and linking to a
 # hosted project). Secrets are NOT stored here: see .env.example and
 # docs/DEPLOYMENT.md.
-project_id = "nexo-finance"
+project_id = "pami-finance"
 
 [api]
 enabled = true
@@ -31,8 +31,8 @@ file_size_limit = "10MiB"
 
 [auth]
 enabled = true
-site_url = "co.nexofinance://auth-callback"
-additional_redirect_urls = ["co.nexofinance://auth-callback", "http://127.0.0.1:8080", "http://localhost:8080"]
+site_url = "co.pamifinance://auth-callback"
+additional_redirect_urls = ["co.pamifinance://auth-callback", "http://127.0.0.1:8080", "http://localhost:8080"]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
 refresh_token_reuse_interval = 10

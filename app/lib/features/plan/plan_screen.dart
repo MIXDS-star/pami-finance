@@ -91,7 +91,7 @@ class _BudgetsTab extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 6),
                       child: Text('Proyección lineal al cierre: ${formatMinor(s.projectedMinor, s.currency)} '
-                          '(${s.daysElapsed} de ${s.daysInPeriod} días)', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                          '(${s.daysElapsed} de ${s.daysInPeriod} días)', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                     ),
                 ]),
               ),
@@ -100,7 +100,7 @@ class _BudgetsTab extends ConsumerWidget {
           FilledButton.icon(onPressed: () => context.push('/plan/budget'), icon: const Icon(Icons.add), label: const Text('Nuevo presupuesto')),
           const SizedBox(height: 8),
           Text('Presupuestos personales: cuenta tu parte asignada en todos tus espacios. Presupuestos de un espacio compartido: '
-              'cuenta el total del espacio.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+              'cuenta el total del espacio.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         ]),
       ),
     );
@@ -108,7 +108,7 @@ class _BudgetsTab extends ConsumerWidget {
 }
 
 Widget _kv(BuildContext context, String k, Widget v) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(k, style: context.text.labelSmall?.copyWith(color: context.nexo.muted)),
+      Text(k, style: context.text.labelSmall?.copyWith(color: context.pami.muted)),
       v,
     ]);
 
@@ -141,10 +141,10 @@ class _GoalsTab extends ConsumerWidget {
                 LabeledProgress(valueBp: p?.progressBp ?? 0),
                 if (p?.projectedCompletion != null)
                   Text('Con tu aporte planificado: ${formatMonth(p!.projectedCompletion!)} (estimación)',
-                      style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                      style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                 if (p?.requiredMonthlyMinor != null && g.targetDate != null)
                   Text('Para llegar el ${formatDateLong(g.targetDate!)}: ${formatMinor(p!.requiredMonthlyMinor!, g.currency)} al mes',
-                      style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                      style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
               ]),
             ),
           ),
@@ -195,9 +195,9 @@ class _OccurrenceTile extends ConsumerWidget {
     final now = DateTime.now();
     final overdue = o.status == 'scheduled' && o.dueOn.isBefore(DateTime(now.year, now.month, now.day));
     final (label, icon, color) = switch (o.status) {
-      'confirmed' => ('Confirmado', Icons.check_circle_outline, context.nexo.positive),
-      'skipped' => ('Omitido', Icons.remove_circle_outline, context.nexo.muted),
-      _ => overdue ? ('Vencido, sin confirmar', Icons.error_outline, context.nexo.warning) : ('Previsto', Icons.schedule, context.nexo.info),
+      'confirmed' => ('Confirmado', Icons.check_circle_outline, context.pami.positive),
+      'skipped' => ('Omitido', Icons.remove_circle_outline, context.pami.muted),
+      _ => overdue ? ('Vencido, sin confirmar', Icons.error_outline, context.pami.warning) : ('Previsto', Icons.schedule, context.pami.info),
     };
     return ListTile(
       contentPadding: EdgeInsets.zero,
@@ -298,7 +298,7 @@ class _PlannerTab extends ConsumerWidget {
             .fold<int>(0, (a, c) => a + c.amountMinor);
         final ref503020 = rule503020(s.incomeMinor);
         return ListView(padding: const EdgeInsets.fromLTRB(16, 16, 16, 96), children: [
-          Text('Basado en ${formatMonth(lastMonth)} (último mes completo).', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+          Text('Basado en ${formatMonth(lastMonth)} (último mes completo).', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
           if (s.incomeCount == 0)
             const Padding(
               padding: EdgeInsets.only(top: 8),
@@ -315,7 +315,7 @@ class _PlannerTab extends ConsumerWidget {
               _ruleRow(context, 'Ahorro (margen)', margin, ref503020.savings, currency),
               const SizedBox(height: 4),
               Text('Real (izquierda) vs. referencia (derecha). La clasificación viene de cada categoría y la puedes cambiar.',
-                  style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                  style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
             ]),
           ),
           const SizedBox(height: 12),
@@ -340,7 +340,7 @@ class _PlannerTab extends ConsumerWidget {
                   trailing: AmountText(scenarioContribution(sc, margin), currency, style: context.text.titleSmall),
                 ),
               Text('Los nombres describen cuánto apartas, no una rentabilidad. No incluyen intereses.',
-                  style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                  style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
             ]),
           ),
           const SizedBox(height: 12),
@@ -371,8 +371,8 @@ class _PlannerTab extends ConsumerWidget {
         child: Row(children: [
           Expanded(child: Text(label)),
           AmountText(actual, c, style: context.text.bodyMedium),
-          Text('  /  ', style: TextStyle(color: context.nexo.muted)),
-          AmountText(reference, c, style: context.text.bodyMedium?.copyWith(color: context.nexo.muted)),
+          Text('  /  ', style: TextStyle(color: context.pami.muted)),
+          AmountText(reference, c, style: context.text.bodyMedium?.copyWith(color: context.pami.muted)),
         ]),
       );
 }

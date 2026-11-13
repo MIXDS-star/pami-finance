@@ -14,21 +14,21 @@ import 'core/router/router.dart';
 import 'core/security/app_lock.dart';
 import 'core/theme/theme.dart';
 
-class NexoApp extends ConsumerStatefulWidget {
-  const NexoApp({super.key});
+class PamiApp extends ConsumerStatefulWidget {
+  const PamiApp({super.key});
 
   @override
-  ConsumerState<NexoApp> createState() => _NexoAppState();
+  ConsumerState<PamiApp> createState() => _PamiAppState();
 }
 
-class _NexoAppState extends ConsumerState<NexoApp> {
+class _PamiAppState extends ConsumerState<PamiApp> {
   StreamSubscription<Uri>? _links;
 
   @override
   void initState() {
     super.initState();
     if (!kIsWeb) {
-      // Invitation links: co.nexofinance://invite/<token> (auth links are handled by supabase_flutter).
+      // Invitation links: co.pamifinance://invite/<token> (auth links are handled by supabase_flutter).
       _links = AppLinks().uriLinkStream.listen((uri) {
         final token = uri.host == 'invite' ? uri.pathSegments.firstOrNull : (uri.pathSegments.length >= 2 && uri.pathSegments[0] == 'invite' ? uri.pathSegments[1] : null);
         if (token != null && token.isNotEmpty) ref.read(routerProvider).go('/invite/$token');
@@ -75,7 +75,7 @@ class _NexoAppState extends ConsumerState<NexoApp> {
       if (prev != null && next == null) ref.read(draftStoreProvider.notifier).clear();
     });
     return MaterialApp.router(
-      title: 'NEXO Finance',
+      title: 'Pami Finance',
       debugShowCheckedModeBanner: false,
       theme: buildTheme(Brightness.light),
       darkTheme: buildTheme(Brightness.dark),

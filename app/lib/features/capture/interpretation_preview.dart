@@ -29,8 +29,8 @@ class InterpretationPreview extends ConsumerWidget {
     Widget row(String label, String value, {bool missing = false}) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(width: 110, child: Text(label, style: context.text.bodyMedium?.copyWith(color: context.nexo.muted))),
-            Expanded(child: Text(value, style: missing ? TextStyle(color: context.nexo.warning, fontWeight: FontWeight.w600) : null)),
+            SizedBox(width: 110, child: Text(label, style: context.text.bodyMedium?.copyWith(color: context.pami.muted))),
+            Expanded(child: Text(value, style: missing ? TextStyle(color: context.pami.warning, fontWeight: FontWeight.w600) : null)),
           ]),
         );
 

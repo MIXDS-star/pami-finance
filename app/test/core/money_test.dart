@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexo_finance/core/money/allocation.dart';
-import 'package:nexo_finance/core/money/money.dart';
+import 'package:pami_finance/core/money/allocation.dart';
+import 'package:pami_finance/core/money/money.dart';
 
 void main() {
   group('formatting', () {

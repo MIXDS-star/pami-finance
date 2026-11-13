@@ -2,17 +2,17 @@
 # Runs the database test-suite (supabase/tests/*.sql) against a fresh local DB.
 set -uo pipefail
 # Always a dedicated database: never the one the running app stack uses.
-export NEXO_DB="${NEXO_TEST_DB:-nexo_test}"
+export PAMI_DB="${PAMI_TEST_DB:-pami_test}"
 source "$(dirname "$0")/local-stack/env.sh"
 
 if [[ "${SKIP_RESET:-0}" != "1" ]]; then
-  bash "$NEXO_ROOT/tools/local-stack/reset-db.sh" >/dev/null || exit 1
+  bash "$PAMI_ROOT/tools/local-stack/reset-db.sh" >/dev/null || exit 1
 fi
-PSQL=(psql -X -q -v ON_ERROR_STOP=1 -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$NEXO_DB")
-"${PSQL[@]}" -f "$NEXO_ROOT/supabase/tests/_helpers.sql" >/dev/null || exit 1
+PSQL=(psql -X -q -v ON_ERROR_STOP=1 -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -d "$PAMI_DB")
+"${PSQL[@]}" -f "$PAMI_ROOT/supabase/tests/_helpers.sql" >/dev/null || exit 1
 
 pass=0; fail=0
-for f in "$NEXO_ROOT"/supabase/tests/[0-9]*.sql; do
+for f in "$PAMI_ROOT"/supabase/tests/[0-9]*.sql; do
   name=$(basename "$f")
   out=$("${PSQL[@]}" -f "$f" 2>&1)
   if [[ $? -eq 0 ]]; then

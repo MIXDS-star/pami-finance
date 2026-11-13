@@ -235,7 +235,7 @@ class _ImportScreenState extends ConsumerState<ImportScreen> with BusyState {
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(_table.first[i].isEmpty ? 'Columna ${i + 1}' : _table.first[i], style: context.text.titleSmall),
-                    Text('Ej.: ${_table.length > 1 && i < _table[1].length ? _table[1][i] : ''}', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+                    Text('Ej.: ${_table.length > 1 && i < _table[1].length ? _table[1][i] : ''}', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
                   ]),
                 ),
                 DropdownButton<ImportField>(
@@ -286,7 +286,7 @@ class _ImportScreenState extends ConsumerState<ImportScreen> with BusyState {
           ),
           const SizedBox(height: 8),
           Text('Los importes se guardan como enteros en ${currency.code}${currency.decimals == 0 ? ' (sin centavos)' : ''}. '
-              'Importar dos veces el mismo archivo no duplica movimientos.', style: context.text.bodySmall?.copyWith(color: context.nexo.muted)),
+              'Importar dos veces el mismo archivo no duplica movimientos.', style: context.text.bodySmall?.copyWith(color: context.pami.muted)),
         ],
       ]),
     );

@@ -37,7 +37,7 @@ class NotificationsScreen extends ConsumerWidget {
               : ListView(children: [
                   for (final n in items)
                     ListTile(
-                      leading: Icon(n.read ? Icons.notifications_none : Icons.notifications_active, color: n.read ? context.nexo.muted : context.colors.primary),
+                      leading: Icon(n.read ? Icons.notifications_none : Icons.notifications_active, color: n.read ? context.pami.muted : context.colors.primary),
                       title: Text(n.title, style: n.read ? null : const TextStyle(fontWeight: FontWeight.w700)),
                       subtitle: Text([if (n.body != null) n.body!, formatDateLong(n.createdAt)].join(' · ')),
                       onTap: () async {

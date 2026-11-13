@@ -1,4 +1,4 @@
--- NEXO Finance · 0500 · Workspace, membership and invitation RPCs.
+-- Pami Finance · 0500 · Workspace, membership and invitation RPCs.
 -- Errors use SQLSTATE PTxxx (PostgREST maps it to HTTP xxx) and a stable
 -- machine code in HINT that the app translates (app/lib/core/errors).
 

@@ -1,4 +1,4 @@
--- NEXO Finance · 0100 · Core identity, workspaces, categories and accounts.
+-- Pami Finance · 0100 · Core identity, workspaces, categories and accounts.
 --
 -- Conventions (see docs/DATA_MODEL.md):
 --   * Money is stored as BIGINT in the currency's minor unit (`*_minor`).
@@ -51,7 +51,7 @@ create table public.currencies (
   code text primary key check (code ~ '^[A-Z]{3}$'),
   name text not null,
   symbol text not null,
-  -- Number of decimals used by NEXO for this currency. COP deliberately uses
+  -- Number of decimals used by Pami for this currency. COP deliberately uses
   -- 0 (centavos are not used in practice); ISO 4217 lists 2.
   minor_unit smallint not null check (minor_unit between 0 and 4)
 );

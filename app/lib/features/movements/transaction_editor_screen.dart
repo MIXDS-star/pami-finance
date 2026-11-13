@@ -307,7 +307,7 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
                 else
                   Text(
                     'Opcional: añade los productos para asignarlos por persona o categoría.',
-                    style: context.text.bodyMedium?.copyWith(color: context.nexo.muted),
+                    style: context.text.bodyMedium?.copyWith(color: context.pami.muted),
                   ),
               ],
               if (d.kind == TxKind.income) ...[
@@ -387,7 +387,7 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
     final options = categories.where((c) => c.kind == kind && (c.workspaceId == null || c.workspaceId == d.workspaceId)).toList();
     final selected = options.where((c) => c.id == d.categoryId).firstOrNull;
     return InkWell(
-      borderRadius: BorderRadius.circular(NexoTokens.radiusS),
+      borderRadius: BorderRadius.circular(PamiTokens.radiusS),
       onTap: () async {
         final picked = await showNxSheet<Category>(
           context,
@@ -556,7 +556,7 @@ class _TransactionEditorScreenState extends ConsumerState<TransactionEditorScree
             padding: const EdgeInsets.only(top: 4),
             child: Text(
               'Los demás miembros ven que pagaste, no con qué cuenta.',
-              style: context.text.bodySmall?.copyWith(color: context.nexo.muted),
+              style: context.text.bodySmall?.copyWith(color: context.pami.muted),
             ),
           ),
         );

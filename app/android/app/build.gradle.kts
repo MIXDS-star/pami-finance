@@ -34,6 +34,12 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            // R8 code shrinking is off: shared_preferences/path_provider call
+            // Kotlin classes from native code by name (JNI), and shrinking
+            // removed them (NoSuchMethodError, then ClassNotFoundException
+            // kotlin.Result on a real device). Reliability over a few MB.
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

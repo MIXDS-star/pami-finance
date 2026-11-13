@@ -25,9 +25,14 @@ class AppLock extends AsyncNotifier<AppLockState> {
 
   @override
   Future<AppLockState> build() async {
-    final supported = await _supported();
-    final enabled = supported && (await _storage.read(_key)) == 'true';
-    return AppLockState(enabled: enabled, locked: enabled, supported: supported);
+    try {
+      final supported = await _supported();
+      final enabled = supported && (await _storage.read(_key)) == 'true';
+      return AppLockState(enabled: enabled, locked: enabled, supported: supported);
+    } catch (_) {
+      // Never block the app because the secure store is unavailable.
+      return const AppLockState(enabled: false, locked: false, supported: false);
+    }
   }
 
   Future<bool> _supported() async {

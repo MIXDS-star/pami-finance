@@ -58,10 +58,13 @@ class WelcomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(24),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 const Spacer(),
-                Container(
-                  width: 64, height: 64,
-                  decoration: BoxDecoration(color: context.colors.primary, borderRadius: BorderRadius.circular(18)),
-                  child: const Icon(Icons.hub_outlined, color: Colors.white, size: 34),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: 64, height: 64,
+                    decoration: BoxDecoration(color: context.colors.primary, borderRadius: BorderRadius.circular(18)),
+                    child: const Icon(Icons.hub_outlined, color: Colors.white, size: 34),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 Text('Pami Finance', style: context.text.headlineMedium),
